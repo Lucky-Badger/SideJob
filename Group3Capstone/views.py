@@ -24,3 +24,9 @@ class Home(View):
         else:
             request.session["username"] = m.username
             return redirect("/dashboard/")
+
+class Dashboard(View):
+    def get(self, request):
+        if not request.session.get("username"):
+            return redirect("/")
+        return render(request, "dashboard.html", {})
