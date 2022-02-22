@@ -29,4 +29,5 @@ class Dashboard(View):
     def get(self, request):
         if not request.session.get("username"):
             return redirect("/")
-        return render(request, "dashboard.html", {})
+        u = User.objects.get(username=request.session['username'])
+        return render(request, "dashboard.html", {"username": u.username})
