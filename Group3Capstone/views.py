@@ -31,3 +31,14 @@ class Dashboard(View):
             return redirect("/")
         u = User.objects.get(username=request.session['username'])
         return render(request, "dashboard.html", {"username": u.username})
+
+class Account(View):
+    def get(self, request):
+     if not request.session.get("username"):
+       return redirect("/")
+     u = User.objects.get(username=request.session['username'])
+     return render(request, "account.html", {"username": u.username, "email": u.email, "password": u.password, "type": type})
+
+    def post(self, request):
+        u = User.objects.get(username=request.session["username"])
+        return render(request, "account.html.html", {"username": u.username, "email": u.email, "password": u.password, "type": type})
