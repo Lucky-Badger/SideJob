@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import User #create and add user models
@@ -14,7 +13,7 @@ class Home(View):
         badPassword = False
         try:
             m = User.objects.get(username=request.POST['username'])
-            badPassword = (m.password != request.POST['password'])
+            badPassword = (m.User_Password != request.POST['password'])
         except:
             noSuchUser = True
         if noSuchUser:
@@ -37,8 +36,16 @@ class Account(View):
      if not request.session.get("username"):
        return redirect("/")
      u = User.objects.get(username=request.session['username'])
-     return render(request, "account.html", {"username": u.username, "email": u.email, "password": u.password, "type": type})
+     return render(request, "account.html",
+                   {"User_ID": u.User_ID, "User_Password": u.User_Password, "User_FName": u.User_FName,
+                    "User_LName": u.User_LName,
+                    "User_DOB": u.User_DOB, "User_Address": u.User_Address, "User_Phone": u.User_Phone,
+                    "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type})
 
     def post(self, request):
         u = User.objects.get(username=request.session["username"])
-        return render(request, "account.html.html", {"username": u.username, "email": u.email, "password": u.password, "type": type})
+        return render(request, "account.html",
+                      {"User_ID": u.User_ID, "User_Password": u.User_Password, "User_FName": u.User_FName,
+                       "User_LName": u.User_LName,
+                       "User_DOB": u.User_DOB, "User_Address": u.User_Address, "User_Phone": u.User_Phone,
+                       "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type})

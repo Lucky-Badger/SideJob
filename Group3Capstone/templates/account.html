@@ -2,16 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ username }}</title>
+    <title>{{ User_FName }}</title>
 </head>
 <body>
 <h1>Account Information</h1>
 <br><br><br>
 <p>
-    Username - {{ username }}
-    Email - {{ email }}
-    Password - password
-    Account Type - {{ type }}
+    User ID - {{ User_ID }}
+    Password - {{ User_Password }}
+    First Name - {{ User_FName }}
+    Last Name - {{ User_LName }}
+    Birthdate - {{ User_DOB }}
+    Address - {{ User_Address }}
+    Phone Number - {{ User_Phone }}
+    Username - {{ UserName }}
+    Email - {{ User_Email }}
+    Type - {{ Account_type }}
 </p>
 <form action="/" method="get">
     <input type="submit" value="Back"/>
