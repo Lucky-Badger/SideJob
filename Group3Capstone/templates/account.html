@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ User_FName }}</title>
+</head>
+<body>
+<h1>Account Information</h1>
+<br><br><br>
+<p>
+    User ID - {{ User_ID }}
+    Password - {{ User_Password }}
+    First Name - {{ User_FName }}
+    Last Name - {{ User_LName }}
+    Birthdate - {{ User_DOB }}
+    Address - {{ User_Address }}
+    Phone Number - {{ User_Phone }}
+    Username - {{ UserName }}
+    Email - {{ User_Email }}
+    Type - {{ Account_type }}
+</p>
+<form action="/" method="get">
+    <input type="submit" value="Back"/>
+    <input type="submit" value="Logout"/>
+</form>
+
+</body>
+</html>
