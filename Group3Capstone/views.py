@@ -1,19 +1,23 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import User #create and add user models
+from Group3Capstone import models
 from .classes.administrator import Admin
 # Create your views here.
 
 class Home(View):
     def get(self, request):
-        request.session.pop("username", None)
+        request.session.pop("UserName", None)
+        userList = models.User.objects.values()
+        print("\n", userList, "\n")
         return render(request, "home.html", {})
     def post(self, request):
         noSuchUser = False
         badPassword = False
+        message = "success"
         try:
-            m = User.objects.get(username=request.POST['username'])
-            badPassword = (m.User_Password != request.POST['password'])
+            m = User.objects.get(UserName=request.POST['UserName'])
+            badPassword = (m.User_Password != request.POST['User_Password'])
         except:
             noSuchUser = True
         if noSuchUser:
@@ -21,8 +25,10 @@ class Home(View):
         elif badPassword:
             return render(request, "home.html", {"message":"bad password"})
         else:
-            request.session["username"] = m.username
-            return redirect("/dashboard/")
+            request.session["UserName"] = m.UserName
+
+
+            return redirect("/dashboard/", {"message":message})
 
 class Dashboard(View):
     def get(self, request):
