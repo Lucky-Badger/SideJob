@@ -3,17 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Pick Up Scheduler</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.css' %}">
 </head>
 <body>
 <h1>Pick Up Scheduler</h1>
 <form action="/" method="post">
     {% csrf_token %}
     <table>
-        <tr><td>Username: </td><td><input type="username" name="UserName" required></td></tr>
-        <tr><td>Password: </td><td><input type="password" name="User_Password" required></td></tr>
+        <tr>
+            <td>Username:</td>
+            <td><input type="username" name="UserName" required></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type="password" name="User_Password" required></td>
+        </tr>
     </table>
     <input type="submit" class="login" value="Login">
 </form>
-{{ message }}
+<a href="/createAccount/" class="btn btn-dark" role="button">Create Account</a>
+<div> {{ message }}  </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar w/ text</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+        Navbar text with an inline element
+      </span>
+        </div>
+    </div>
+</nav>
+<div>
+    {% for i in errors %}
+        <td> {{ i }}  </td><br>
+
+    {% endfor %}
+</div>
+
 </body>
 </html>
