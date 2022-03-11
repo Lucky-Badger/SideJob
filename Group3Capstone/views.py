@@ -32,8 +32,13 @@ class Dashboard(View):
         # if not request.session.get("UserName"):
         #     return redirect("/")
         # u = User.objects.get(UserName=request.session['UserName'])
-        u = User.objects.get(UserName=request.get['UserName'])
-        return render(request, "dashboard.html", {"username": u.UserName})
+
+        #u = User.objects.get(UserName=request.get['UserName'])
+        uTest = request.session["username"]
+
+        print("\n", uTest, "\n")
+
+        return render(request, "dashboard.html", {"username": uTest})
 
 class CreateAccountsPage(View):
     def get(self, request):
