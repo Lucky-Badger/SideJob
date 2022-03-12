@@ -4,11 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.css' %}">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar w/ text</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/account/">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard/">Dashboard</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
 <h1>Dashboard</h1>
-<br><br><br>
-<p class="fs-1">Welcome, {{ username }}!</p><br>
+<br>
+<p class="fs-1">Welcome, {{ username }}!</p>
+<br>
+    <table>
+        {% for s in sport %}
+            <tr><td>{{ s.Sport_Name }}</td></tr>
+        {% endfor %}
+    </table>
+<br>
 <a href="/account/">Account</a><br><br>
     <form action="/" method="get">
         <input type="submit" value="Logout"/>

@@ -2,7 +2,7 @@ from sqlite3 import IntegrityError
 
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import User #create and add user models
+from .models import User, Sport #create and add user models
 from .classes.administrator import Admin
 # Create your views here.
 
@@ -29,16 +29,19 @@ class Home(View):
 
 class Dashboard(View):
     def get(self, request):
-        # if not request.session.get("UserName"):
-        #     return redirect("/")
-        # u = User.objects.get(UserName=request.session['UserName'])
 
-        #u = User.objects.get(UserName=request.get['UserName'])
         uTest = request.session["username"]
 
         print("\n" + uTest + "\n")
 
-        return render(request, "dashboard.html", {"username": uTest})
+
+        userVals=list(User.objects.filter(UserName=uTest).values())
+
+        sports=list(Sport.objects.all().values())
+
+
+        return render(request, "dashboard.html", {"username": uTest, "sport": sports})
+
 
 class CreateAccountsPage(View):
     def get(self, request):
