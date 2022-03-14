@@ -1,0 +1,23 @@
+.body {
+  height: 100%
+  border-box; align-content: center;
+}
+
+.login{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shorten {
+  max-width: 40px; !important;
+  width: 50%; !important;
+}
+.top-padding {
+  padding-top: 50px; !important;
+}
+.input-group {
+    position: relative;
+    border-collapse: separate;
+    display: block;
+}
