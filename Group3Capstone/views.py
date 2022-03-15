@@ -32,15 +32,16 @@ class Dashboard(View):
 
         uTest = request.session["username"]
 
+       #using this variable from account view can now pass to a template via context and get whatever data needed
+        u = User.objects.get(UserName=request.session['username'])
+
         print("\n" + uTest + "\n")
-
-
-        userVals=list(User.objects.filter(UserName=uTest).values())
+        print("\n" + u.User_FName)
 
         sports=list(Sport.objects.all().values())
 
 
-        return render(request, "dashboard.html", {"username": uTest, "sport": sports})
+        return render(request, "dashboard.html", {"username": uTest, "sport": sports, "user": u})
 
 
 class CreateAccountsPage(View):
@@ -84,7 +85,7 @@ class Account(View):
     def get(self, request):
      if not request.session.get("username"):
        return redirect("/")
-     u = User.objects.get(username=request.session['username'])
+     u = User.objects.get(UserName=request.session['username'])
      return render(request, "account.html",
                    {"User_ID": u.User_ID, "User_Password": u.User_Password, "User_FName": u.User_FName,
                     "User_LName": u.User_LName,
