@@ -2,14 +2,17 @@ from sqlite3 import IntegrityError
 
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import * #create and add user models
+from .models import User, Sport  # create and add user models
 from .classes.administrator import Admin
+
+
 # Create your views here.
 
 class Home(View):
     def get(self, request):
         request.session.pop("username", None)
         return render(request, "home.html", {})
+
     def post(self, request):
         noSuchUser = False
         badPassword = False
@@ -20,27 +23,25 @@ class Home(View):
         except:
             noSuchUser = True
         if noSuchUser:
-            return render(request, "home.html", {"message":"user does not exist"})
+            return render(request, "home.html", {"message": "user does not exist"})
         elif badPassword:
-            return render(request, "home.html", {"message":"bad password"})
+            return render(request, "home.html", {"message": "bad password"})
         else:
             request.session["username"] = m.UserName
             return redirect("/dashboard/")
 
+
 class Dashboard(View):
     def get(self, request):
-
         uTest = request.session["username"]
 
        #using this variable from account view can now pass to a template via context and get whatever data needed
         u = User.objects.get(UserName=request.session['username'])
 
-        sports=list(Sport.objects.all().values())
-
         print("\n" + uTest + "\n")
         print("\n" + u.User_FName)
-        print("\n", sports)
 
+        sports=list(Sport.objects.all().values())
 
         return render(request, "dashboard.html", {"username": uTest, "sport": sports, "user": u})
 
@@ -48,6 +49,7 @@ class Dashboard(View):
 class CreateAccountsPage(View):
     def get(self, request):
         return render(request, "createAccountsPage.html", {"errors": {"Just returning GET"}})
+
     def post(self, request):
         first_name = request.POST['First_Name']
         last_name = request.POST['Last_Name']
@@ -60,15 +62,15 @@ class CreateAccountsPage(View):
         password = request.POST['Password']
         password2 = request.POST['Password2']
 
-        error_dict =[]
+        error_dict = []
 
         if password != password2:
             error_dict.append("Passwords don't match, try again")
-            return render(request, "home.html", {"errors": error_dict} )
+            return render(request, "home.html", {"errors": error_dict})
 
         newUser = User(User_FName=first_name, UserName=userName, User_LName=last_name, User_Password=password,
-                    User_Phone=phoneNumber, Account_type=role, User_DOB=DOB, User_Address=address,
-                    User_Email=email, )
+                       User_Phone=phoneNumber, Account_type=role, User_DOB=DOB, User_Address=address,
+                       User_Email=email, )
         message_dict = []
         # error_dict = validate_user(user)
         valid = ["User successfully created"]
@@ -82,6 +84,8 @@ class CreateAccountsPage(View):
             return render(request, "home.html", {"errors": valid})
         # else:
         # return render(request, "create_user.html", {"errors": error_dict})
+
+
 class Account(View):
     def get(self, request):
      if not request.session.get("username"):
@@ -100,14 +104,3 @@ class Account(View):
                        "User_LName": u.User_LName,
                        "User_DOB": u.User_DOB, "User_Address": u.User_Address, "User_Phone": u.User_Phone,
                        "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type})
-
-
-
-class Groups(View):
-    def get(self, request):
-
-        u=User.objects.get(UserName=request.session["username"])
-        group=list(Group.objects.all().values())
-
-
-        return render(request, "groups.html", {"user": u, "groups": group})
