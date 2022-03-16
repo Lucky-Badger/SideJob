@@ -35,13 +35,15 @@ class Dashboard(View):
     def get(self, request):
         uTest = request.session["username"]
 
+       #using this variable from account view can now pass to a template via context and get whatever data needed
+        u = User.objects.get(UserName=request.session['username'])
+
         print("\n" + uTest + "\n")
+        print("\n" + u.User_FName)
 
-        userVals = list(User.objects.filter(UserName=uTest).values())
+        sports=list(Sport.objects.all().values())
 
-        sports = list(Sport.objects.all().values())
-
-        return render(request, "dashboard.html", {"username": uTest, "sport": sports})
+        return render(request, "dashboard.html", {"username": uTest, "sport": sports, "user": u})
 
 
 class CreateAccountsPage(View):
@@ -86,14 +88,14 @@ class CreateAccountsPage(View):
 
 class Account(View):
     def get(self, request):
-        if not request.session.get("username"):
-            return redirect("/")
-        u = User.objects.get(username=request.session['username'])
-        return render(request, "account.html",
-                      {"User_ID": u.User_ID, "User_Password": u.User_Password, "User_FName": u.User_FName,
-                       "User_LName": u.User_LName,
-                       "User_DOB": u.User_DOB, "User_Address": u.User_Address, "User_Phone": u.User_Phone,
-                       "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type})
+     if not request.session.get("username"):
+       return redirect("/")
+     u = User.objects.get(UserName=request.session['username'])
+     return render(request, "account.html",
+                   {"User_ID": u.User_ID, "User_Password": u.User_Password, "User_FName": u.User_FName,
+                    "User_LName": u.User_LName,
+                    "User_DOB": u.User_DOB, "User_Address": u.User_Address, "User_Phone": u.User_Phone,
+                    "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type})
 
     def post(self, request):
         u = User.objects.get(username=request.session["username"])
