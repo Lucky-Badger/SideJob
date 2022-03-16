@@ -2,7 +2,7 @@ from sqlite3 import IntegrityError
 
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import User, Sport #create and add user models
+from .models import * #create and add user models
 from .classes.administrator import Admin
 # Create your views here.
 
@@ -35,10 +35,11 @@ class Dashboard(View):
        #using this variable from account view can now pass to a template via context and get whatever data needed
         u = User.objects.get(UserName=request.session['username'])
 
+        sports=list(Sport.objects.all().values())
+
         print("\n" + uTest + "\n")
         print("\n" + u.User_FName)
-
-        sports=list(Sport.objects.all().values())
+        print("\n", sports)
 
 
         return render(request, "dashboard.html", {"username": uTest, "sport": sports, "user": u})
@@ -99,3 +100,14 @@ class Account(View):
                        "User_LName": u.User_LName,
                        "User_DOB": u.User_DOB, "User_Address": u.User_Address, "User_Phone": u.User_Phone,
                        "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type})
+
+
+
+class Groups(View):
+    def get(self, request):
+
+        u=User.objects.get(UserName=request.session["username"])
+        group=list(Group.objects.all().values())
+
+
+        return render(request, "groups.html", {"user": u, "groups": group})
