@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.css' %}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-warning">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Navbar w/ text</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -35,9 +35,9 @@
 
 <h1>Dashboard</h1>
 <br>
-<p class="fs-1">Welcome, {{ username }}!</p>
+<p class="fs-1">Welcome, {{ user.User_FName }}!</p>
 <br>
-    <table>
+    <table class="table-responsive">
         {% for s in sport %}
             <tr><td>{{ s.Sport_Name }}</td></tr>
         {% endfor %}
