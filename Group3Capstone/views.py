@@ -105,3 +105,14 @@ class Account(View):
                        "User_LName": u.User_LName,
                        "User_DOB": u.User_DOB, "User_Address": u.User_Address, "User_Phone": u.User_Phone,
                        "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type})
+
+
+
+class Groups(View):
+    def get(self, request):
+
+        u=User.objects.get(UserName=request.session["username"])
+        group=list(Group.objects.all().values())
+
+
+        return render(request, "groups.html", {"user": u, "groups": group})
