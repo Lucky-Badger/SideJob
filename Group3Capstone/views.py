@@ -98,7 +98,8 @@ class Account(View):
                     "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type})
 
     def post(self, request):
-        u = User.objects.get(username=request.session["username"])
+        uTest = request.session["username"]
+        u = User.objects.get(UserName=uTest)
         return render(request, "account.html",
                       {"User_ID": u.User_ID, "User_Password": u.User_Password, "User_FName": u.User_FName,
                        "User_LName": u.User_LName,
