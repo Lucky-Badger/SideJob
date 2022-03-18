@@ -2,7 +2,7 @@ from sqlite3 import IntegrityError
 
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import User, Sport  # create and add user models
+from .models import * # create and add user models
 from .classes.administrator import Admin
 
 
@@ -112,7 +112,23 @@ class Groups(View):
     def get(self, request):
 
         u=User.objects.get(UserName=request.session["username"])
-        group=list(Group.objects.all().values())
+        group=list(Group.objects.all())
+        print("\n", group)
+
 
 
         return render(request, "groups.html", {"user": u, "groups": group})
+    def post(self, request):
+        u=request.session["username"]
+
+        print("\n" + u )
+        groupJoined=request.POST["name"]#group ID
+        print("\n", groupJoined)
+
+        g=Group.objects.get(Group_Id=groupJoined)
+        val=g.SpotsAvailable-1
+        print("\n", val)
+        g.SpotsAvailable = val
+        g.save()
+        message="You have successfully joined a group"
+        return render(request, "groups.html", {"message": message})
