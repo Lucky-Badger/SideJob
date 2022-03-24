@@ -28,8 +28,9 @@ class Sport(models.Model):
 class Group(models.Model):
    Group_Id = models.BigAutoField(primary_key=True)
    Sport = models.ForeignKey(Sport, on_delete=models.CASCADE, null=True)
-   Creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+   Creator = models.ForeignKey(User, related_name='Group_Creator' , on_delete=models.CASCADE, null=True)
    SpotsAvailable = models.IntegerField(null=True)
+   Joined_Users = models.ManyToManyField('User', related_name='Joining_User')
 
 
 class Location(models.Model):

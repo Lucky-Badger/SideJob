@@ -23,4 +23,5 @@ urlpatterns = [
     path('account/', Account.as_view()),
     path('createAccount/', CreateAccountsPage.as_view()),
     path('groups/', Groups.as_view()),
+    path('joinedgroups/', JoinedGroups.as_view()),
 ]
