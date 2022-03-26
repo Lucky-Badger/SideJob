@@ -115,20 +115,77 @@ class Groups(View):
         group=list(Group.objects.all())
         print("\n", group)
 
-
-
         return render(request, "groups.html", {"user": u, "groups": group})
+
     def post(self, request):
         u=request.session["username"]
+        currentUser=User.objects.get(UserName=request.session["username"]) #setting up user objects
 
-        print("\n" + u )
         groupJoined=request.POST["name"]#group ID
-        print("\n", groupJoined)
+        print("\n", groupJoined)#to confirm in console that group was sent to post properly
 
-        g=Group.objects.get(Group_Id=groupJoined)
-        val=g.SpotsAvailable-1
-        print("\n", val)
-        g.SpotsAvailable = val
-        g.save()
-        message="You have successfully joined a group"
-        return render(request, "groups.html", {"message": message})
+        g = Group.objects.get(Group_Id=groupJoined)
+        joinedUsers = list(g.Joined_Users.all())  # returns a list of all user objects
+
+
+        for i in joinedUsers:
+            if(i.UserName == request.session["username"]):
+                message= "You have already joined this group, here is who else is in your group"
+                message2 = "To join another group, please click the group tab on the navigation bar up top to go back to the list of groups"
+                return render(request, "groups.html", {"message": message, "message2": message2 , "joinedUsers": joinedUsers})
+        #if it finds a matching username in the list of user objects, then don't add them to list, redirect to same page and show list of users
+
+
+        if(g.SpotsAvailable <= 0):
+            message="This group is full please choose another one"
+            group = list(Group.objects.all())
+            return render(request, "groups.html", {"message": message, "groups": group})
+        else:
+            val=g.SpotsAvailable-1#if user hasn't joined group, decrease this
+            print("\n", val)
+            g.SpotsAvailable = val
+            g.save()
+            g.Joined_Users.add(currentUser)
+            g.save()
+            print(g.SpotsAvailable)
+            print(list(g.Joined_Users.all()))
+
+            for i in joinedUsers:
+                print(i.User_FName)  # using 'i' to iterate through the list, can call whatever value using i because i is the object that's in the list
+
+            message = "You have successfully joined a group"
+            message2 = "If you'd like join another group, please click the group tab on the navigation bar up top"
+            message3 = "Here are other users in your group"
+            return render(request, "groups.html", {"message": message, "message2": message2, "message3": message3, "joinedUsers": joinedUsers})
+
+
+class JoinedGroups(View):
+    def get(self, request):
+        currentUser=User.objects.get(UserName=request.session["username"])
+
+        allGroups=Group.objects.all()#every group
+        currentUserGroups=[]
+        groupsToTemplate=[]
+
+        for i in allGroups:#for each group in list of groups
+            print(i.Sport)
+            joinedUsers=i.Joined_Users.all()#get list of users in that group
+            for u in joinedUsers:
+                if(u.UserName == currentUser.UserName):#if our current user is in the group
+                    print("This person is in a group")
+                    currentUserGroups.append(i.Group_Id)#add that group id to list of users groups
+
+        print(currentUserGroups)
+        print(len(currentUserGroups))
+
+        if(len(currentUserGroups) == 0):#if there are no joined groups, go join dummy
+            message="You have not joined a group yet please join one by clicking on the groups tab and selecting a group"
+            return render(request, "joinedgroups.html", {"message": message})
+        else:
+            for i in currentUserGroups:
+                g=Group.objects.get(Group_Id=i)#getting group object to put in new list so we can get details in template
+                print(g.Sport.Sport_Name)
+                groupsToTemplate.append(g)
+
+            message="Here are the groups you are in: "
+            return render(request, "joinedgroups.html", {"message": message, "joined_groups": groupsToTemplate})

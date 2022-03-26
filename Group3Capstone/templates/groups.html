@@ -29,6 +29,9 @@
                 <li class="nav-item">
                     <a class="nav-link border-dark bg-black text-warning" href="/groups/">Groups</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link border-dark" href="/joinedgroups/">Joined Groups</a>
+                </li>
 
             </ul>
 
@@ -52,6 +55,17 @@
 </table>
 </form>
 <p>{{ message }}</p>
+<p>{{ message2 }}</p>
+<p>{{ message3 }}</p>
+
+<table>
+    {% for u in joinedUsers %}
+    <tr><td>
+        {{ u.User_FName }}
+
+    </td></tr>
+    {% endfor %}
+</table>
 
 </body>
 </html>
