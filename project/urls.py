@@ -24,4 +24,5 @@ urlpatterns = [
     path('createAccount/', CreateAccountsPage.as_view()),
     path('groups/', Groups.as_view()),
     path('joinedgroups/', JoinedGroups.as_view()),
+    path('editaccount/', EditAccountPage.as_view())
 ]

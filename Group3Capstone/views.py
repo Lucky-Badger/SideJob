@@ -85,7 +85,6 @@ class CreateAccountsPage(View):
         # else:
         # return render(request, "create_user.html", {"errors": error_dict})
 
-
 class Account(View):
     def get(self, request):
      if not request.session.get("username"):
@@ -104,8 +103,45 @@ class Account(View):
                       {"User_ID": u.User_ID, "User_Password": u.User_Password, "User_FName": u.User_FName,
                        "User_LName": u.User_LName,
                        "User_DOB": u.User_DOB, "User_Address": u.User_Address, "User_Phone": u.User_Phone,
-                       "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type})
+                       "UserName": u.UserName, "User_Email": u.User_Email, "Account_type": u.Account_type, "user": u})
 
+class EditAccountPage(View):
+    def get(self, request):
+        if not request.session.get("username"):
+            return redirect("/")
+        u = User.objects.get(UserName=request.session['username'])
+        return render(request, "editaccount.html",
+                      {"User_ID": u.User_ID, "User_Password": u.User_Password, "User_FName": u.User_FName,
+                       "User_LName": u.User_LName,
+                       "User_DOB": u.User_DOB, "User_Address": u.User_Address, "User_Phone": u.User_Phone,
+                       "UserName": u.UserName, "User_Email": u.User_Email} )
+
+    def post(self, request):
+        first_name = request.POST['First_Name']
+        last_name = request.POST['Last_Name']
+        DOB = request.POST['DOB']
+        phoneNumber = request.POST['PhoneNumber']
+        address = request.POST['Address']
+        email = request.POST['Email']
+        password = request.POST['Password']
+        password2 = request.POST['Password2']
+
+        error_dict = []
+
+        if password != password2:
+            error_dict.append("Passwords don't match, try again")
+            return render(request, "editaccount.html", {"message": error_dict})
+        request.session.get("username")
+        u = User.objects.get(UserName=request.session["username"])
+        u.User_FName = first_name
+        u.User_LName = last_name
+        u.User_DOB = DOB
+        u.User_Phone = phoneNumber
+        u.User_Address = address
+        u.User_Email = email
+        u.User_Password = password
+        u.save()
+        return render(request, "dashboard.html", {"user": u})
 
 
 class Groups(View):

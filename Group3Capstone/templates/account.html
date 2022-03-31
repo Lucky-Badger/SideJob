@@ -2,12 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ User_FName }}</title>
-      {% load static %}
+    <title>Dashboard</title>
+    {% load static %}
     <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.css' %}">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar w/ text</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/account/">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/editaccount/">Edit Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard/">Dashboard</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
 <h1>Account Information</h1>
 <br>
 <p>
@@ -32,9 +59,3 @@
     Type - {{ Account_type }}
 </p>
 <form action="/" method="get">
-    <input type="submit" value="Back"/>
-    <input type="submit" value="Logout"/>
-</form>
-
-</body>
-</html>
