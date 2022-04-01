@@ -225,3 +225,32 @@ class JoinedGroups(View):
 
             message="Here are the groups you are in: "
             return render(request, "joinedgroups.html", {"message": message, "joined_groups": groupsToTemplate})
+
+class CreateGroupPage(View):
+    def get(self, request):
+        return render(request, "createGroupPage.html", {"errors": {"Just returning GET"}})
+
+    def post(self, request):
+        groupName = request.POST['Group_Name']
+        sport = request.POST['Sport']
+        maxCount = request.POST['Max_Players']
+
+        sportObj = Sport(Sport_Name=sport)
+
+        sportObj.save()
+
+
+
+        newGroup = Group(Sport=sportObj, Group_Name=groupName, SpotsAvailable=maxCount )
+        message_dict = []
+        # error_dict = validate_user(user)
+        valid = ["User successfully created"]
+
+        try:
+            newGroup.save()
+        except IntegrityError:
+            return render(request, "createGroupPage.html","")
+        else:
+            return render(request, "home.html", {"errors": valid})
+        # else:
+        # return render(request, "create_user.html", {"errors": error_dict})
