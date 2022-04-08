@@ -27,6 +27,7 @@ class Sport(models.Model):
 
 class Group(models.Model):
    Group_Id = models.BigAutoField(primary_key=True)
+   Group_Name = models.CharField(max_length=20, unique=True, blank=True)
    Sport = models.ForeignKey(Sport, on_delete=models.CASCADE, null=True)
    Creator = models.ForeignKey(User, related_name='Group_Creator' , on_delete=models.CASCADE, null=True)
    SpotsAvailable = models.IntegerField(null=True)
