@@ -1,5 +1,9 @@
 
-.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+.navbar-nav .nav-item .nav-link {
+    color: black;
+}
+.navbar-nav .nav-item.active .nav-link,
+.navbar-nav .nav-item:hover .nav-link {
     background-color: black;
     color: yellow;
 }
