@@ -1,4 +1,16 @@
-body
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: black;
+    color: yellow;
+}
+p {
+  text-align: center;
+}
+.groupList {
+  text-align: center;
+}
+
+table
 {
-    background-color: lightblue;
+  text-align: center;
 }

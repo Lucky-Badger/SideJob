@@ -6,6 +6,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/styles.css' %}">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-warning">
@@ -65,15 +66,15 @@
 <p>{{ message }}</p>
 <p>{{ message2 }}</p>
 <p>{{ message3 }}</p>
+<div class="groupList">
+    <table>
+        {% for u in joinedUsers %}
+        <tr><td>
+            {{ u.User_FName }}
 
-<table>
-    {% for u in joinedUsers %}
-    <tr><td>
-        {{ u.User_FName }}
-
-    </td></tr>
-    {% endfor %}
-</table>
-
+        </td></tr>
+        {% endfor %}
+    </table>
+</div>
 </body>
 </html>
