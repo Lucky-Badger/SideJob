@@ -14,7 +14,7 @@ class User(models.Model):
    User_LName = models.CharField(max_length=40, null=True)
    User_DOB = models.DateField(auto_now=False, auto_now_add=False, null=True)
    User_Address = models.CharField(max_length=100, null=True)
-   User_Phone = models.IntegerField(null=True)
+   User_Phone = models.CharField(max_length=12, null=True)
    UserName = models.CharField(max_length=40, null=True)
    User_Email = models.CharField(max_length=40, null=True)
    Account_type = models.CharField(max_length=1, choices=AccountType.choices, default=AccountType.Administrator)
