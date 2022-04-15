@@ -261,3 +261,6 @@ class CreateGroupPage(View):
 class NotSignedIn(View):
     def get(self, request):
         return render(request, "notSignedIn.html", {})
+class GroupEventsPage(View):
+    def get(self, request):
+        return render(request, "groupEventsPage.html", {})
