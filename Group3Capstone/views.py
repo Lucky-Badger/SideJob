@@ -267,7 +267,8 @@ class GroupEventsPage(View):
         object = Group.objects.get(Group_Id=id)
 
         allEvents = Event.objects.all()
-        return render(request, "groupEventsPage.html", {"group": object, "events": allEvents})
+        result = list(filter(lambda x: (x.Group == object), allEvents))
+        return render(request, "groupEventsPage.html", {"group": object, "events": result})
     def post(self, request, *args, **kwargs):
         id = kwargs['group_id']
         object = Group.objects.get(Group_Id=id)
@@ -281,8 +282,9 @@ class GroupEventsPage(View):
         event = Event(Event_Name=eventName, Event_Description=groupDescription, Group = object)
         event.save()
         allEvents = Event.objects.all()
+        result = list(filter(lambda x: (x.Group == object), allEvents))
 
-        return render(request, "groupEventsPage.html", {"group": object,"events": allEvents, "users": users,})
+        return render(request, "groupEventsPage.html", {"group": object,"events": result, "users": users,})
 
 
 
