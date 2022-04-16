@@ -44,6 +44,14 @@
         </div>
     </div>
 </nav>
+
+<div class = "page-header">
+   <h1>
+       {{ group.Group_Name}}
+      <small>Welcome to the !</small>
+   </h1>
+</div>
+
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Create an event
@@ -105,10 +113,37 @@
         </div>
     </div>
 </div>
-{{ group.Group_Id }}
-  {% for i in events %}
-       {{ i.Event_Name }}
-        {% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 ">
+            <div class="card mx-auto" style="width: 18rem;">
+                <div class="card-header">
+                    AllEvents
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for i in events %}
+                        <li class="list-group-item"> {{ i.Event_Name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-lg-6 ">
+            <div class="card mx-auto" style="width: 18rem;">
+                <div class="card-header">
+                    Joined Users
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for i in users %}
+                        <li class="list-group-item"> {{ i.User_FName }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="/../../static/Group3Capstone/js/bootstrap.min.js"></script>
 </body>
 </html>

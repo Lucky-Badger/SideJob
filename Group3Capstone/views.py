@@ -272,14 +272,17 @@ class GroupEventsPage(View):
         id = kwargs['group_id']
         object = Group.objects.get(Group_Id=id)
 
+        users = object.Joined_Users.all()
+
         eventName = request.POST['Event_Name']
         location = request.POST['Location']
         time  = request.POST['Time']
         groupDescription = request.POST['Description']
         event = Event(Event_Name=eventName, Event_Description=groupDescription, Group = object)
         event.save()
+        allEvents = Event.objects.all()
 
-        return render(request, "groupEventsPage.html", {"group": object})
+        return render(request, "groupEventsPage.html", {"group": object,"events": allEvents, "users": users,})
 
 
 
