@@ -45,19 +45,58 @@
     </div>
 </nav>
 
-<div class = "page-header">
-   <h1>
-       {{ group.Group_Name}}
-      <small>Welcome to the !</small>
-   </h1>
+<div class="page-header">
+    <h1>
+        {{ group.Group_Name }}
+        <small>Welcome to the !</small>
+    </h1>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 ">
+            <div class="card mx-auto" style="width: 18rem;">
+                <div class="card-header">
+                    AllEvents
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for i in events %}
+                        <li class="list-group-item"> {{ i.Event_Name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-lg-6 ">
+            <div class="card mx-auto" style="width: 18rem;">
+                <div class="card-header">
+                    Joined Users
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for i in users %}
+                        <li class="list-group-item"> {{ i.User_FName }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Create an event
-</button>
+<div class="container mx-auto">
+    <div class="row">
+        <div class="col-lg-6 mx-auto text-center">
+            <button type="button mx-auto" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Create an event
+            </button>
+        </div>
+    </div>
 
-<!-- Modal -->
+</div>
+
+
+<!-- Modal For Create an Event popup-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -113,36 +152,6 @@
         </div>
     </div>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-6 ">
-            <div class="card mx-auto" style="width: 18rem;">
-                <div class="card-header">
-                    AllEvents
-                </div>
-                <ul class="list-group list-group-flush">
-                    {% for i in events %}
-                        <li class="list-group-item"> {{ i.Event_Name }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-        </div>
-        <div class="col-lg-6 ">
-            <div class="card mx-auto" style="width: 18rem;">
-                <div class="card-header">
-                    Joined Users
-                </div>
-                <ul class="list-group list-group-flush">
-                    {% for i in users %}
-                        <li class="list-group-item"> {{ i.User_FName }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <script src="/../../static/Group3Capstone/js/bootstrap.min.js"></script>
 </body>
