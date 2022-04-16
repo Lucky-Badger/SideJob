@@ -265,11 +265,14 @@ class GroupEventsPage(View):
     def get(self, request, *args, **kwargs):
         id = kwargs['group_id']
         currGroup = Group.objects.get(Group_Id=id)
+
         users = currGroup.Joined_Users.all()
 
         allEvents = Event.objects.all()
-        result = list(filter(lambda x: (x.Group == object), allEvents))
-        return render(request, "groupEventsPage.html", {"group": currGroup, "events": result,"users": users})
+        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
+        print(users[0])
+
+        return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
     def post(self, request, *args, **kwargs):
         id = kwargs['group_id']
         currGroup = Group.objects.get(Group_Id=id)
