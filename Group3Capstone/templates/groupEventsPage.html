@@ -65,7 +65,7 @@
                     style="max-height: 350px; min-width: 24rem; overflow-x: hidden !important;">
                     {% for i in events %}
                         <a href="#" class="list-group-item list-group-item-action" aria-current="true"
-                           data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever=" {{ i.Event_Name }}">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ i.Event_Name }}</h5>
                                 <small>3 days ago</small>
@@ -162,12 +162,12 @@
     </div>
 </div>
 
-<!-- Modal For Create an Event popup-->
+<!-- Modal For EVENT popup-->
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-center w-100" id="exampleModalLabel">{{ i }}</h5>
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -220,5 +220,23 @@
 </div>
 
 <script src="/../../static/Group3Capstone/js/bootstrap.min.js"></script>
+<script>
+    var exampleModal = document.getElementById('exampleModal2')
+    exampleModal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        var recipient = button.getAttribute('data-bs-whatever')
+        // If necessary, you could initiate an AJAX request here
+        // and then do the updating in a callback.
+        //
+        // Update the modal's content.
+        var modalTitle = exampleModal.querySelector('.modal-title')
+        var modalBodyInput = exampleModal.querySelector('.modal-body input')
+
+        modalTitle.textContent =  recipient
+        modalBodyInput.value = recipient
+    })
+</script>
 </body>
 </html>
