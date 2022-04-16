@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active border-dark" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active border-dark" aria-current="page" href="/notSignedIn/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link border-dark" href="/account/">Account</a>
@@ -46,7 +46,7 @@
     </div>
 </nav>
 
-<h1>Groups you have joined</h1>
+<h1 class = "text-center">Groups you have joined</h1>
 
 
 <p>{{ message }}</p>
@@ -56,6 +56,7 @@
         {% for i in joined_groups %}
         <tr><td>
             {{ i.Sport.Sport_Name }} - {{ i.Creator.User_FName }}
+           <div><a href="{%  url 'GroupEventsPage' i.Group_Id %}" class="btn btn-info" name="createGroup" role="button">Go to Group Page</a></div>
         </td></tr>
         {% endfor %}
     </table>
