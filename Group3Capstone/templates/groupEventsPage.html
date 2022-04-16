@@ -58,11 +58,16 @@
         <div class="col-lg-6 ">
             <div class="card mx-auto" style="width: 18rem;">
                 <div class="card-header">
-                    AllEvents
+                    {{ group.Group_Name }} Events
                 </div>
                 <ul class="list-group list-group-flush">
                     {% for i in events %}
-                        <li class="list-group-item"> {{ i.Event_Name }}</li>
+                        <li class="list-group-item"><strong>{{ i.Event_Name }}</strong>
+                            <div>
+                               - {{ i.Event_Description }}
+                            </div>
+                        </li>
+
                     {% endfor %}
                 </ul>
             </div>
@@ -75,7 +80,7 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     {% for i in users %}
-                        <li class="list-group-item"> {{ i.User_FName }}</li>
+                        <li class="list-group-item"> {{ i.User_FName }} {{ i.User_LName }}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -87,7 +92,8 @@
 <div class="container mx-auto">
     <div class="row">
         <div class="col-lg-6 mx-auto text-center">
-            <button type="button mx-auto" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button mx-auto" class="btn btn-primary " data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
                 Create an event
             </button>
         </div>
