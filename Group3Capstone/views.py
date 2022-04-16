@@ -272,18 +272,20 @@ class GroupEventsPage(View):
         return render(request, "groupEventsPage.html", {"group": object, "events": result,"users": users})
     def post(self, request, *args, **kwargs):
         id = kwargs['group_id']
-        object = Group.objects.get(Group_Id=id)
+        currGroup = Group.objects.get(Group_Id=id)
 
         users = object.Joined_Users.all()
 
-        eventName = request.POST['Event_Name']
-        location = request.POST['Location']
-        time  = request.POST['Time']
-        groupDescription = request.POST['Description']
-        event = Event(Event_Name=eventName, Event_Description=groupDescription, Group = object)
-        event.save()
+        if 'createEvent' in request.POST:
+            eventName = request.POST['Event_Name']
+            location = request.POST['Location']
+            time = request.POST['Time']
+            groupDescription = request.POST['Description']
+            event = Event(Event_Name=eventName, Event_Description=groupDescription, Group=currGroup)
+            event.save()
+
         allEvents = Event.objects.all()
-        result = list(filter(lambda x: (x.Group == object), allEvents))
+        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
         print(users[0])
 
         return render(request, "groupEventsPage.html", {"group": object,"events": result, "users": users,})
