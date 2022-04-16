@@ -54,16 +54,18 @@
 </div>
 
 
-<div class="container" >
+<div class="container">
     <div class="row">
         <div class="col-lg-6 ">
             <div class="card mx-auto" style="width: 24rem;">
                 <div class="card-header">
                     {{ group.Group_Name }} Events
                 </div>
-                <ul class="list-group overflow-scroll list-group-flush" style="max-height: 350px; min-width: 24rem; overflow-x: hidden !important;">
+                <ul class="list-group overflow-scroll list-group-flush"
+                    style="max-height: 350px; min-width: 24rem; overflow-x: hidden !important;">
                     {% for i in events %}
-                        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                        <a href="#" class="list-group-item list-group-item-action" aria-current="true"
+                           data-bs-toggle="modal" data-bs-target="#exampleModal2">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ i.Event_Name }}</h5>
                                 <small>3 days ago</small>
@@ -162,10 +164,10 @@
 
 <!-- Modal For Create an Event popup-->
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Create a game</h5>
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">{{ i }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
