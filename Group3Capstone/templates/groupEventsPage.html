@@ -94,18 +94,21 @@
                         </div>
                     </div>
 
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="createGroup" class="btn btn-primary">Create Group</button>
+                    </div>
 
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Create Group</button>
-            </div>
+
         </div>
     </div>
 </div>
-
+{{ group.Group_Id }}
+  {% for i in events %}
+       {{ i.Event_Name }}
+        {% endfor %}
 <script src="/../../static/Group3Capstone/js/bootstrap.min.js"></script>
 </body>
 </html>

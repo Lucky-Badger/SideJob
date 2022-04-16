@@ -262,5 +262,24 @@ class NotSignedIn(View):
     def get(self, request):
         return render(request, "notSignedIn.html", {})
 class GroupEventsPage(View):
-    def get(self, request):
-        return render(request, "groupEventsPage.html", {})
+    def get(self, request, *args, **kwargs):
+        id = kwargs['group_id']
+        object = Group.objects.get(Group_Id=id)
+
+        allEvents = Event.objects.all()
+        return render(request, "groupEventsPage.html", {"group": object, "events": allEvents})
+    def post(self, request, *args, **kwargs):
+        id = kwargs['group_id']
+        object = Group.objects.get(Group_Id=id)
+
+        eventName = request.POST['Event_Name']
+        location = request.POST['Location']
+        time  = request.POST['Time']
+        groupDescription = request.POST['Description']
+        event = Event(Event_Name=eventName, Event_Description=groupDescription, Group = object)
+        event.save()
+
+        return render(request, "groupEventsPage.html", {"group": object})
+
+
+
