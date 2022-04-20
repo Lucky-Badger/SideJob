@@ -63,9 +63,9 @@
                 <div id="collapse{{ g.Group_Id }}" class="accordion-collapse collapse" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body" style="padding-bottom: 50px">
-                        <div><p><strong>Sport</strong> - {{ g.Sport }}</p></div>
+                        <div><p><strong>Sport</strong> - {{ g.Sport.Sport_Name }}</p></div>
                         <div><p><strong>Description</strong> - {{ g.Group_Description }}</p></div>
-                        <input type="submit" class="btn-outline-dark clearfix float-start" value="Join" name="name">
+                        <input type="submit" class="btn-outline-dark clearfix float-start" value="{{ g.Group_Id }}" name="name">
                     </div>
                 </div>
             </div>
