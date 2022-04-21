@@ -25,6 +25,9 @@
                     <a class="nav-link border-dark" href="/account/">Account</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/editaccount/">Edit Account</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link border-dark" href="/dashboard/">Dashboard</a>
                 </li>
                 <li class="nav-item">
@@ -43,7 +46,7 @@
     </div>
 </nav>
 
-<h1 class = "text-center">Groups you have joined</h1>
+<h1>Groups you have joined</h1>
 
 
 <p>{{ message }}</p>
@@ -53,7 +56,6 @@
         {% for i in joined_groups %}
         <tr><td>
             {{ i.Sport.Sport_Name }} - {{ i.Creator.User_FName }}
-           <div><a href="{%  url 'GroupEventsPage' i.Group_Id %}" class="btn btn-info" name="createGroup" role="button">Go to Group Page</a></div>
         </td></tr>
         {% endfor %}
     </table>
