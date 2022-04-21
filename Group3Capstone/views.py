@@ -2,8 +2,11 @@ from sqlite3 import IntegrityError
 
 from django.shortcuts import render, redirect
 from django.views import View
+from django.core.mail import send_mail
 from .models import *  # create and add user models
+
 from .classes.administrator import Admin
+
 
 
 # Create your views here.
@@ -154,13 +157,43 @@ class Groups(View):
         group = list(Group.objects.all())
         print("\n", group)
 
-        return render(request, "groups.html", {"user": u, "groups": group})
+        currentUser = User.objects.get(UserName=request.session["username"])
+
+        allGroups = Group.objects.all()  # every group
+        currentUserGroups = []
+        groupsToTemplate = []
+
+        for i in allGroups:  # for each group in list of groups
+            print(i.Sport)
+            joinedUsers = i.Joined_Users.all()  # get list of users in that group
+            for u in joinedUsers:
+                if (u.UserName == currentUser.UserName):  # if our current user is in the group
+                    print("This person is in a group")
+                    currentUserGroups.append(i.Group_Id)  # add that group id to list of users groups
+
+        print(currentUserGroups)
+        print(len(currentUserGroups))
+
+        if (len(currentUserGroups) == 0):  # if there are no joined groups, go join dummy
+            message = "You have not joined a group yet please join one by clicking on the groups tab and selecting a group"
+            return render(request, "joinedgroups.html", {"message": message})
+        else:
+            for i in currentUserGroups:
+                g = Group.objects.get(
+                    Group_Id=i)  # getting group object to put in new list so we can get details in template
+                print(g.Sport.Sport_Name)
+                groupsToTemplate.append(g)
+
+            message = "Here are the groups you are in: "
+
+
+        return render(request, "groups.html", {"user": u, "groups": group, "message": message, "joined_groups": groupsToTemplate})
 
     def post(self, request):
         u = request.session["username"]
         currentUser = User.objects.get(UserName=request.session["username"])  # setting up user objects
 
-        groupJoined = request.POST["name"]  # group ID
+        groupJoined = request.POST["name"] #get groupID to put user in
         print("\n", groupJoined)  # to confirm in console that group was sent to post properly
 
         g = Group.objects.get(Group_Id=groupJoined)
@@ -195,6 +228,19 @@ class Groups(View):
             message = "You have successfully joined a group"
             message2 = "If you'd like join another group, please click the group tab on the navigation bar up top"
             message3 = "Here are other users in your group"
+
+
+           # userEmail = u.User_Email
+            print("Sending email to user")
+            send_mail(
+                'You have joined a group!',
+                'You Joined a group congratulations',
+                'django.noreply00@gmail.com',
+                ['clevide2@uwm.edu'],
+                fail_silently=False
+            )
+            print("\n Email Sent to user" )
+
             return render(request, "groups.html",
                           {"message": message, "message2": message2, "message3": message3, "joinedUsers": joinedUsers})
 
@@ -261,37 +307,3 @@ class CreateGroupPage(View):
 class NotSignedIn(View):
     def get(self, request):
         return render(request, "notSignedIn.html", {})
-class GroupEventsPage(View):
-    def get(self, request, *args, **kwargs):
-        id = kwargs['group_id']
-        currGroup = Group.objects.get(Group_Id=id)
-
-        users = currGroup.Joined_Users.all()
-
-        allEvents = Event.objects.all()
-        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
-        print(users[0])
-
-        return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
-    def post(self, request, *args, **kwargs):
-        id = kwargs['group_id']
-        currGroup = Group.objects.get(Group_Id=id)
-
-        users = currGroup.Joined_Users.all()
-
-        if 'createEvent' in request.POST:
-            eventName = request.POST['Event_Name']
-            location = request.POST['Location']
-            time = request.POST['Time']
-            groupDescription = request.POST['Description']
-            event = Event(Event_Name=eventName, Event_Description=groupDescription, Group=currGroup)
-            event.save()
-
-        allEvents = Event.objects.all()
-        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
-        print(users[0])
-
-        return render(request, "groupEventsPage.html", {"group": currGroup,"events": result, "users": users,})
-
-
-
