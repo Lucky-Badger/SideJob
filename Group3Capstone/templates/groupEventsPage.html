@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Info Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/groupEventPage.scss' %}">
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Panther Pickups</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active bg-black text-warning" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/account/">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/editaccount/">Edit Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link border-dark" href="/dashboard/">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/groups/">Groups</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link border-dark" href="/joinedgroups/">Joined Groups</a>
+                </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link border-dark" href="/createGroupPage/">Create Group</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="page-header text-center">
+    <h1>
+        Group: {{ group.Group_Name }}
+        <small></small>
+    </h1>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 ">
+            <div class="card mx-auto" style="width: 24rem;">
+                <div class="card-header">
+                    {{ group.Group_Name }} Events
+                </div>
+                <ul class="list-group overflow-scroll list-group-flush"
+                    style="max-height: 350px; min-width: 24rem; overflow-x: hidden !important;">
+                    {% for i in events %}
+                        <a href="#" class="list-group-item list-group-item-action" aria-current="true"
+                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-name="{{ i }}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ i.Event_Name }}</h5>
+                                <small>3 days ago</small>
+                            </div>
+                            <p class="mb-1">{{ i.Event_Description }}</p>
+                            <small>And some small print.</small>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-6 ">
+            <div class="card mx-auto" style="width: 18rem;">
+                <div class="card-header">
+                    Joined Users
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for i in users %}
+                        <li class="list-group-item"> {{ i.User_FName }} {{ i.User_LName }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<div class="container mx-auto">
+    <div class="row">
+        <div class="col-lg-6 mx-auto text-center">
+            <button type="button mx-auto" class="btn btn-primary " data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                Create an event
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal For Create an Event popup-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Create a game</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="mx-1 mx-md-4" method="post">
+                    {% csrf_token %}
+
+                    <div class="col-lg-8 col-md-8 col-xl-8 mx-auto justify-content-center">
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <input type="text" id="form3Example1c" name="Event_Name"
+                                       class="form-control"/>
+                                <label class="form-label" for="form3Example1c">Event Name</label>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <input type="text" id="form3Example1c" name="Location" class="form-control"/>
+                                <label class="form-label" for="form3Example1c">Location</label>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <input type="text" id="form3Example1c" name="Time"
+                                       class="form-control"/>
+                                <label class="form-label" for="form3Example1c">Time</label>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <input type="text" id="form3Example1c" name="Description" class="form-control"/>
+                                <label class="form-label" for="form3Example1c">Description</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="createEvent" class="btn btn-primary">Create Event</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal For EVENT popup-->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="mx-1 mx-md-4" method="post">
+                    {% csrf_token %}
+
+                    <div class="col-lg-8 col-md-8 col-xl-8 mx-auto justify-content-center">
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <input type="text" id="form3Example1c" name="Event_Name"
+                                       class="form-control"/>
+                                <label class="form-label" for="form3Example1c">Event Name</label>
+                            </div>
+                        </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="createEvent" class="btn btn-primary">Create Event</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="/../../static/Group3Capstone/js/bootstrap.min.js"></script>
+<script>
+    var exampleModal = document.getElementById('exampleModal2')
+    exampleModal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        var recipient = button.getAttribute('data-bs-whatever')
+        // If necessary, you could initiate an AJAX request here
+        // and then do the updating in a callback.
+        //
+        // Update the modal's content.
+
+        var modalTitle = exampleModal.querySelector('.modal-title')
+        var modalBodyInput = exampleModal.querySelector('.modal-body input')
+        console.log(recipient)
+        modalTitle.textContent =  recipient
+        modalBodyInput.value = recipient
+    })
+</script>
+</body>
+</html>

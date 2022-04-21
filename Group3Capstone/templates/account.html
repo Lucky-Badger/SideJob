@@ -26,9 +26,6 @@
                     <a class="nav-link border-dark bg-black text-warning" href="/account/">Account</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/editaccount/">Edit Account</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/dashboard/">Dashboard</a>
                 </li>
                 <li class="nav-item">
@@ -44,7 +41,7 @@
     </div>
 </nav>
 
-<h1>Account Information</h1>
+<h1 class ="text-center"> Account Information</h1>
 <br>
 <p>
     User ID - {{ User_ID }}
@@ -67,4 +64,7 @@
     <br>
     Type - {{ Account_type }}
 </p>
+<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+    <a class="btn btn-warning" href="/editaccount/">Edit Information</a>
+</div>
 <form action="/" method="get">

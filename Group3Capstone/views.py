@@ -307,3 +307,37 @@ class CreateGroupPage(View):
 class NotSignedIn(View):
     def get(self, request):
         return render(request, "notSignedIn.html", {})
+class GroupEventsPage(View):
+    def get(self, request, *args, **kwargs):
+        id = kwargs['group_id']
+        currGroup = Group.objects.get(Group_Id=id)
+
+        users = currGroup.Joined_Users.all()
+
+        allEvents = Event.objects.all()
+        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
+        print(users[0])
+
+        return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
+    def post(self, request, *args, **kwargs):
+        id = kwargs['group_id']
+        currGroup = Group.objects.get(Group_Id=id)
+
+        users = currGroup.Joined_Users.all()
+
+        if 'createEvent' in request.POST:
+            eventName = request.POST['Event_Name']
+            location = request.POST['Location']
+            time = request.POST['Time']
+            groupDescription = request.POST['Description']
+            event = Event(Event_Name=eventName, Event_Description=groupDescription, Group=currGroup)
+            event.save()
+
+        allEvents = Event.objects.all()
+        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
+        print(users[0])
+
+        return render(request, "groupEventsPage.html", {"group": currGroup,"events": result, "users": users,})
+
+
+

@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+
+from Group3Capstone import views
 from Group3Capstone.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +29,6 @@ urlpatterns = [
     path('editaccount/', EditAccountPage.as_view()),
     path('createGroupPage/', CreateGroupPage.as_view()),
     path('notSignedIn/', NotSignedIn.as_view()),
+    path('groupEventPage/', GroupEventsPage.as_view()),
+    path('groupEventsPage/<group_id>/', views.GroupEventsPage.as_view(), name="GroupEventsPage"),
 ]

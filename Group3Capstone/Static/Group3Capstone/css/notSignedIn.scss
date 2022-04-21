@@ -1,4 +1,6 @@
-.imgClass{
- min-width: 100%;
-   min-height: 100%;
+.carousel-item img {
+  object-fit: cover;
+  object-position: center;
+  height: 525px;
+  overflow: hidden;
 }
