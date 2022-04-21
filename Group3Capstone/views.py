@@ -2,8 +2,11 @@ from sqlite3 import IntegrityError
 
 from django.shortcuts import render, redirect
 from django.views import View
+from django.core.mail import send_mail
 from .models import *  # create and add user models
+
 from .classes.administrator import Admin
+
 
 
 # Create your views here.
@@ -190,7 +193,7 @@ class Groups(View):
         u = request.session["username"]
         currentUser = User.objects.get(UserName=request.session["username"])  # setting up user objects
 
-        groupJoined = request.POST["name"]  # group ID
+        groupJoined = request.POST["name"] #get groupID to put user in
         print("\n", groupJoined)  # to confirm in console that group was sent to post properly
 
         g = Group.objects.get(Group_Id=groupJoined)
@@ -225,6 +228,19 @@ class Groups(View):
             message = "You have successfully joined a group"
             message2 = "If you'd like join another group, please click the group tab on the navigation bar up top"
             message3 = "Here are other users in your group"
+
+
+           # userEmail = u.User_Email
+            print("Sending email to user")
+            send_mail(
+                'You have joined a group!',
+                'You Joined a group congratulations',
+                'django.noreply00@gmail.com',
+                ['clevide2@uwm.edu'],
+                fail_silently=False
+            )
+            print("\n Email Sent to user" )
+
             return render(request, "groups.html",
                           {"message": message, "message2": message2, "message3": message3, "joinedUsers": joinedUsers})
 

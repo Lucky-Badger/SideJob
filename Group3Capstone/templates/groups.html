@@ -50,6 +50,7 @@
 <h1 class="text-center ">Groups</h1>
 <div class="accordion col-md-8 float-start ps-2 pe-2" id="accordionExample">
     <form action="/groups/" method="post">
+
         {% csrf_token %}
         {% for g in groups %}
             <div class="accordion-item ">
@@ -65,7 +66,8 @@
                     <div class="accordion-body" style="padding-bottom: 50px">
                         <div><p><strong>Sport</strong> - {{ g.Sport.Sport_Name }}</p></div>
                         <div><p><strong>Description</strong> - {{ g.Group_Description }}</p></div>
-                        <input type="submit" class="btn-outline-dark clearfix float-start" value="{{ g.Group_Id }}" name="name">
+                        <input type="hidden" value="{{ g.Group_Id }}" name="name">
+                        <button type="submit" class="btn btn-primary" name="Join Group">Join Group</button>
                     </div>
                 </div>
             </div>
