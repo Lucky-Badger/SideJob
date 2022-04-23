@@ -297,7 +297,6 @@ class GroupEventsPage(View):
             event.save()
 
         if 'joinEvent' in request.POST:
-            print("IT WORKS")
             eventName2 = request.POST.get('joinEvent')
             print(eventName2)
 
