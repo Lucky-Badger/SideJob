@@ -1,7 +1,10 @@
 from sqlite3 import IntegrityError
 
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import *  # create and add user models
 from .classes.administrator import Admin
 
@@ -67,7 +70,6 @@ class CreateAccountsPage(View):
         if password != password2:
             error_dict.append("Passwords don't match, try again")
             return render(request, "home.html", {"errors": error_dict})
-
 
         newUser = User(User_FName=first_name, UserName=userName, User_LName=last_name, User_Password=password,
                        User_Phone=phoneNumber, Account_type=role, User_DOB=DOB, User_Address=address,
@@ -245,7 +247,8 @@ class CreateGroupPage(View):
 
         sportObj.save()
 
-        newGroup = Group(Sport=sportObj,Group_Description=groupDescription, Group_Name=groupName, SpotsAvailable=maxCount)
+        newGroup = Group(Sport=sportObj, Group_Description=groupDescription, Group_Name=groupName,
+                         SpotsAvailable=maxCount)
         message_dict = []
         # error_dict = validate_user(user)
         valid = ["User successfully created"]
@@ -258,9 +261,14 @@ class CreateGroupPage(View):
             return render(request, "home.html", {"errors": valid})
         # else:
         # return render(request, "create_user.html", {"errors": error_dict})
+
+
 class NotSignedIn(View):
     def get(self, request):
         return render(request, "notSignedIn.html", {})
+
+
+@method_decorator(csrf_exempt, name='dispatch')
 class GroupEventsPage(View):
     def get(self, request, *args, **kwargs):
         id = kwargs['group_id']
@@ -273,6 +281,7 @@ class GroupEventsPage(View):
         print(users[0])
 
         return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
+
     def post(self, request, *args, **kwargs):
         id = kwargs['group_id']
         currGroup = Group.objects.get(Group_Id=id)
@@ -287,11 +296,13 @@ class GroupEventsPage(View):
             event = Event(Event_Name=eventName, Event_Description=groupDescription, Group=currGroup)
             event.save()
 
+        if 'joinEvent' in request.POST:
+            print("IT WORKS")
+            eventName2 = request.POST.get('joinEvent')
+            print(eventName2)
+
+
         allEvents = Event.objects.all()
         result = list(filter(lambda x: (x.Group == currGroup), allEvents))
-        print(users[0])
 
-        return render(request, "groupEventsPage.html", {"group": currGroup,"events": result, "users": users,})
-
-
-
+        return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })

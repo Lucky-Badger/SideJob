@@ -65,7 +65,8 @@
                     style="max-height: 350px; min-width: 24rem; overflow-x: hidden !important;">
                     {% for i in events %}
                         <a href="#" class="list-group-item list-group-item-action" aria-current="true"
-                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-name="{{ i }}">
+                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-name="{{ i }}"
+                           data-bs-id="{{ i.Event_Id }}">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ i.Event_Name }}</h5>
                                 <small>3 days ago</small>
@@ -174,19 +175,9 @@
                 <form class="mx-1 mx-md-4" method="post">
                     {% csrf_token %}
 
-                    <div class="col-lg-8 col-md-8 col-xl-8 mx-auto justify-content-center">
-                        <div class="d-flex flex-row align-items-center mb-4">
-                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                            <div class="form-outline flex-fill mb-0">
-                                <input type="text" id="form3Example1c" name="Event_Name"
-                                       class="form-control"/>
-                                <label class="form-label" for="form3Example1c">Event Name</label>
-                            </div>
-                        </div>
-
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" name="createEvent" class="btn btn-primary">Create Event</button>
+                        <div id="code"></div>
                     </div>
 
                 </form>
@@ -200,18 +191,28 @@
 <script>
     var exampleModal = document.getElementById('exampleModal2')
     exampleModal.addEventListener('show.bs.modal', function (event) {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         // Button that triggered the modal
         var button = event.relatedTarget
         // Extract info from data-bs-* attributes
         var recipient = button.getAttribute('data-bs-whatever')
+        var id = button.getAttribute('data-bs-id')
+
         // If necessary, you could initiate an AJAX request here
         // and then do the updating in a callback.
         //
         // Update the modal's content.
         var modalTitle = exampleModal.querySelector('.modal-title')
         var modalBodyInput = exampleModal.querySelector('.modal-body input')
-        console.log(recipient)
-        modalTitle.textContent =  recipient
+        let btn = document.createElement("button");
+        btn.innerHTML = "Save";
+        btn.name = "joinEvent"
+        btn.value = id
+        btn.type = "submit"
+        btn.className = "btn btn-primary"
+        document.getElementById("code").appendChild(btn);
+
+        modalTitle.textContent = recipient
         modalBodyInput.value = recipient
     })
 </script>
