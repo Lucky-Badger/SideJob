@@ -66,13 +66,14 @@
                     {% for i in events %}
                         <a href="#" class="list-group-item list-group-item-action" aria-current="true"
                            data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-title="{{ i.Event_Name }}"
-                           data-bs-id="{{ i.Event_Id }}" data-bs-loc="{{ i.Location }}" data-bs-desc = "{{ i.Event_Description }}" data-bs-date = "{{ i.Date }}" >
+                           data-bs-id="{{ i.Event_Id }}" data-bs-loc="{{ i.Location }}"
+                           data-bs-desc="{{ i.Event_Description }}" data-bs-date="{{ i.Date.date }}" data-bs-time="{{ i.Date.time }}">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">{{ i.Event_Name }}</h5>
-                                <small>3 days ago</small>
+                                <h5 class="mb-1" style="padding-right: 10px">{{ i.Event_Name }}</h5>
+                                <small>{{ i.Date.date }}</small>
                             </div>
-                            <p class="mb-1">{{ i.Event_Description }}</p>
-                            <small>{{ i.Location}}</small>
+                            <p class="mb-1" style="text-overflow-ellipsis: ellipsis ellipsis; ">{{ i.Event_Description }}</p>
+                            <small>{{ i.Location }}</small>
                         </a>
                     {% endfor %}
                 </ul>
@@ -134,14 +135,15 @@
                                 <label class="form-label" for="form3Example1c">Location</label>
                             </div>
                         </div>
+
                         <div class="d-flex flex-row align-items-center mb-4">
                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                             <div class="form-outline flex-fill mb-0">
-                                <input type="text" id="form3Example1c" name="Time"
-                                       class="form-control" required>
-                                <label class="form-label" for="form3Example1c">Time</label>
+                                <input type="datetime-local" class="form-control" name="dateTime" value="{{placement.date|date:'Y-m-d' }}">
+                                <label class="form-label" for="form3Example1c">Date / Time</label>
                             </div>
                         </div>
+
                         <div class="d-flex flex-row align-items-center mb-4">
                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                             <div class="form-outline flex-fill mb-0">
@@ -174,16 +176,20 @@
             <div class="modal-body">
                 <form class="mx-1 mx-md-4" method="post">
                     {% csrf_token %}
-                    <div id = "title"></div>
+                    <div id="title"></div>
                     <strong>Description:</strong>
-                    <div id = "desc"></div>
+                    <div id="desc"></div>
+                    <strong>Date:</strong>
+                    <div id="date"></div>
                     <strong>Time:</strong>
-                    <div id = "date"></div>
+                    <div id="time"></div>
                     <strong>Location:</strong>
-                    <div id = "location"></div>
+                    <div id="location"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary"  name = "joinEvent" id = "joinEvent" data-bs-dismiss="modal">Join Event</button>
+                        <button type="submit" class="btn btn-primary" name="joinEvent" id="joinEvent"
+                                data-bs-dismiss="modal">Join Event
+                        </button>
                         <div id="code"></div>
                     </div>
 
@@ -206,15 +212,17 @@
         var desc = button.getAttribute('data-bs-desc')
         var id = button.getAttribute('data-bs-id')
         var date = button.getAttribute('data-bs-date')
+        var time = button.getAttribute('data-bs-time')
         var location = button.getAttribute('data-bs-loc')
 
         // If necessary, you could initiate an AJAX request here
         // and then do the updating in a callback.
         //
         // Update the modal's content.
-        document.getElementById("desc").innerHTML =  desc;
-         document.getElementById("date").innerHTML =  date;
-         document.getElementById("location").innerHTML =  location;
+        document.getElementById("desc").innerHTML = desc;
+        document.getElementById("date").innerHTML = date;
+        document.getElementById("time").innerHTML = time;
+        document.getElementById("location").innerHTML = location;
         var modalTitle = exampleModal.querySelector('.modal-title')
         var btn = document.querySelector('#joinEvent');
         btn.value = id
@@ -225,11 +233,13 @@
 </script>
 <script type="text/javascript" src="{% static 'Group3Capstone/jquery-3.6.0.js' %}"></script>
 <script type="text/javascript">
-window.onload = function() {
-   if (window.jQuery) {
-      alert('jQuery is loaded');
-   } else {
-      alert('jQuery is not loaded');}}
+    window.onload = function () {
+        if (window.jQuery) {
+            alert('jQuery is loaded');
+        } else {
+            alert('jQuery is not loaded');
+        }
+    }
 </script>
 
 </body>
