@@ -297,10 +297,12 @@ class GroupEventsPage(View):
             event.save()
 
         if 'joinEvent' in request.POST:
-            eventName2 = request.POST.get('joinEvent')
-            print(eventName2)
-            print("inside Joinevent ")
-        print("posting")
+            eventID = request.POST.get('joinEvent')
+            currentUser = User.objects.get(UserName=request.session["username"])
+            currentEvent= Event.objects.get(Event_Id= eventID)
+            reservation = Reservation(User=currentUser, Event= currentEvent)
+            reservation.save()
+            print(eventID)
 
         allEvents = Event.objects.all()
         result = list(filter(lambda x: (x.Group == currGroup), allEvents))
