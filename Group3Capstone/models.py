@@ -51,7 +51,7 @@ class Event(models.Model):
     Creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     Group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
     Date = models.DateTimeField(auto_now=False, auto_now_add=False, null=True)
-    Location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
+    Location = models.CharField(max_length=40, null = True)
     Event_Description = models.CharField(max_length=256, null=True)
     Event_Name = models.CharField(max_length=256, null=True)
 

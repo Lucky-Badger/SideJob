@@ -293,7 +293,7 @@ class GroupEventsPage(View):
             location = request.POST['Location']
             time = request.POST['Time']
             groupDescription = request.POST['Description']
-            event = Event(Event_Name=eventName, Event_Description=groupDescription, Group=currGroup)
+            event = Event(Event_Name=eventName, Event_Description=groupDescription, Group=currGroup, Location= location, )
             event.save()
 
         if 'joinEvent' in request.POST:
