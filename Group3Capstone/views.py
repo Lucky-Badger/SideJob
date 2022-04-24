@@ -187,6 +187,8 @@ class Groups(View):
             g.save()
             g.Joined_Users.add(currentUser)
             g.save()
+            groupReservation = GroupReservation(User = currentUser, Group = g)
+            groupReservation.save()
             print(g.SpotsAvailable)
             print(list(g.Joined_Users.all()))
 
@@ -313,10 +315,25 @@ class Events(View):
         currentUser = User.objects.get(UserName=request.session["username"])
         userReservationArr = Reservation.objects.filter(User = currentUser)
         eventArray =[]
+
+        groupReservations = GroupReservation.objects.filter(User = currentUser)
+        groupArray = []
+
+        groupEventsArr = []
+
+        for i in groupReservations:
+            group = Group.objects.get(Group_Id = i.Group.Group_Id)
+            groupArray.append(group)
+
+        for i in groupArray:
+            groupEvents = Event.objects.get(Group = i)
+            groupEventsArr.append(groupEvents)
+
+
         for i in userReservationArr:
             event = Event.objects.get( Event_Id = i.Event.Event_Id)
             eventArray.append(event)
-        return render(request, "eventsPage.html", {"EventArray": eventArray})
+        return render(request, "eventsPage.html", {"UserEvents": eventArray, "GroupsEvents": groupEventsArr})
 
     def post(self, request, *args, **kwargs):
 

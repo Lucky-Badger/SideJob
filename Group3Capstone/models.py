@@ -39,6 +39,11 @@ class Group(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('GroupsEventsPage/', kwargs={'group_id': self.Group_Id})
 
+class GroupReservation(models.Model):
+    GroupReservation_Id = models.BigAutoField(primary_key=True)
+    User = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    Group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+
 
 class Location(models.Model):
     Location_Id = models.BigAutoField(primary_key=True)  # just a name

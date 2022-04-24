@@ -65,7 +65,7 @@
                 </div>
                 <ul class="list-group overflow-scroll list-group-flush"
                     style="max-height: 350px; min-width: 30rem; overflow-x: hidden !important;">
-                    {% for i in EventArray %}
+                    {% for i in UserEvents %}
                         <a href="#" class="list-group-item list-group-item-action" aria-current="true"
                            data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-title="{{ i.Event_Name }}"
                            data-bs-id="{{ i.Event_Id }}" data-bs-loc="{{ i.Location }}"
@@ -87,8 +87,18 @@
                     My Groups Events
                 </div>
                 <ul class="list-group list-group-flush">
-                    {% for i in users %}
-                        <li class="list-group-item"> {{ i.User_FName }} {{ i.User_LName }}</li>
+                    {% for i in GroupsEvents %}
+                       <a href="#" class="list-group-item list-group-item-action" aria-current="true"
+                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-title="{{ i.Event_Name }}"
+                           data-bs-id="{{ i.Event_Id }}" data-bs-loc="{{ i.Location }}"
+                           data-bs-desc="{{ i.Event_Description }}" data-bs-date="{{ i.Date.date }}" data-bs-time="{{ i.Date.time }}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1" style="padding-right: 18px">{{ i.Event_Name }}</h5>
+                                <small>{{ i.Date.date }}</small>
+                            </div>
+                            <p class="mb-1" style="text-overflow-ellipsis: ellipsis ellipsis; ">{{ i.Event_Description }}</p>
+                            <small>{{ i.Location }}</small>
+                        </a>
                     {% endfor %}
                 </ul>
             </div>
