@@ -65,8 +65,8 @@
                     style="max-height: 350px; min-width: 24rem; overflow-x: hidden !important;">
                     {% for i in events %}
                         <a href="#" class="list-group-item list-group-item-action" aria-current="true"
-                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-name="{{ i }}"
-                           data-bs-id="{{ i.Event_Id }}">
+                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-title="{{ i.Event_Name }}"
+                           data-bs-id="{{ i.Event_Id }}" data-bs-desc = "{{ i.Event_Description }}" data-bs-date = "{{ i.Date }}">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ i.Event_Name }}</h5>
                                 <small>3 days ago</small>
@@ -174,7 +174,9 @@
             <div class="modal-body">
                 <form class="mx-1 mx-md-4" method="post">
                     {% csrf_token %}
-
+                    <div id = "title"></div>
+                    <div id = "desc"></div>
+                    <div id = "time"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary"  name = "joinEvent" id = "joinEvent" data-bs-dismiss="modal">Join Event</button>
@@ -196,21 +198,21 @@
         // Button that triggered the modal
         var button = event.relatedTarget
         // Extract info from data-bs-* attributes
-        var recipient = button.getAttribute('data-bs-whatever')
+        var title = button.getAttribute('data-bs-title')
+        var desc = button.getAttribute('data-bs-desc')
         var id = button.getAttribute('data-bs-id')
 
         // If necessary, you could initiate an AJAX request here
         // and then do the updating in a callback.
         //
         // Update the modal's content.
+        document.getElementById("desc").innerHTML =  desc;
         var modalTitle = exampleModal.querySelector('.modal-title')
-        var modalBodyInput = exampleModal.querySelector('.modal-body input')
         var btn = document.querySelector('#joinEvent');
         btn.value = id
 
+        modalTitle.textContent = title
 
-        modalTitle.textContent = recipient
-        modalBodyInput.value = recipient
     })
 </script>
 <script type="text/javascript" src="{% static 'Group3Capstone/jquery-3.6.0.js' %}"></script>
