@@ -1,3 +1,5 @@
+from datetime import datetime
+from django.utils import timezone
 from sqlite3 import IntegrityError
 
 from django.shortcuts import render, redirect
@@ -187,7 +189,7 @@ class Groups(View):
             g.save()
             g.Joined_Users.add(currentUser)
             g.save()
-            groupReservation = GroupReservation(User = currentUser, Group = g)
+            groupReservation = GroupReservation(User=currentUser, Group=g)
             groupReservation.save()
             print(g.SpotsAvailable)
             print(list(g.Joined_Users.all()))
@@ -295,14 +297,15 @@ class GroupEventsPage(View):
             location = request.POST['Location']
             dateTime = request.POST['dateTime']
             groupDescription = request.POST['Description']
-            event = Event(Event_Name=eventName, Event_Description=groupDescription, Group=currGroup, Location= location,Date=dateTime )
+            event = Event(Event_Name=eventName, Event_Description=groupDescription, Group=currGroup, Location=location,
+                          Date=dateTime)
             event.save()
 
         if 'joinEvent' in request.POST:
             eventID = request.POST.get('joinEvent')
             currentUser = User.objects.get(UserName=request.session["username"])
-            currentEvent= Event.objects.get(Event_Id= eventID)
-            reservation = Reservation(User=currentUser, Event= currentEvent)
+            currentEvent = Event.objects.get(Event_Id=eventID)
+            reservation = Reservation(User=currentUser, Event=currentEvent)
             reservation.save()
             print(eventID)
 
@@ -310,29 +313,31 @@ class GroupEventsPage(View):
         result = list(filter(lambda x: (x.Group == currGroup), allEvents))
 
         return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
+
+
 class Events(View):
     def get(self, request, *args, **kwargs):
         currentUser = User.objects.get(UserName=request.session["username"])
-        userReservationArr = Reservation.objects.filter(User = currentUser)
-        eventArray =[]
+        userReservationArr = Reservation.objects.filter(User=currentUser)
+        eventArray = []
 
-        groupReservations = GroupReservation.objects.filter(User = currentUser)
+        groupReservations = GroupReservation.objects.filter(User=currentUser)
         groupArray = []
 
         groupEventsArr = []
-
+        # get reservations, and get all the users groups
         for i in groupReservations:
-            group = Group.objects.get(Group_Id = i.Group.Group_Id)
+            group = Group.objects.get(Group_Id=i.Group.Group_Id)
             groupArray.append(group)
-
+        #using groupArray, get all events which belong to user
         for i in groupArray:
-            groupEvents = Event.objects.get(Group = i)
-            groupEventsArr.append(groupEvents)
-
-
+            groupEvent = Event.objects.filter(Group=i)
+            groupEventsArr.append(groupEvent)
+        # using the datetime model field only show the upcoming events not past ones
         for i in userReservationArr:
-            event = Event.objects.get( Event_Id = i.Event.Event_Id)
-            eventArray.append(event)
+            event = Event.objects.get(Event_Id=i.Event.Event_Id)
+            if event.Date > timezone.now():
+                eventArray.append(event)
         return render(request, "eventsPage.html", {"UserEvents": eventArray, "GroupsEvents": groupEventsArr})
 
     def post(self, request, *args, **kwargs):
