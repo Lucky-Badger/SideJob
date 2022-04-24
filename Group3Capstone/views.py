@@ -282,7 +282,7 @@ class GroupEventsPage(View):
 
         allEvents = Event.objects.all()
         result = list(filter(lambda x: (x.Group == currGroup), allEvents))
-        print(users[0])
+        result = filter(lambda x: (x.Date > timezone.now()), result)
 
         return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
 
@@ -301,16 +301,19 @@ class GroupEventsPage(View):
                           Date=dateTime)
             event.save()
 
+        allEvents = Event.objects.all()
+
+        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
+        result = filter(lambda x: (x.Date > timezone.now()), result)
+
         if 'joinEvent' in request.POST:
             eventID = request.POST.get('joinEvent')
             currentUser = User.objects.get(UserName=request.session["username"])
             currentEvent = Event.objects.get(Event_Id=eventID)
+            if Reservation.objects.get(User = currentUser, Event = currentEvent).exists():
+                return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
             reservation = Reservation(User=currentUser, Event=currentEvent)
             reservation.save()
-            print(eventID)
-
-        allEvents = Event.objects.all()
-        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
 
         return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
 
@@ -331,8 +334,11 @@ class Events(View):
             groupArray.append(group)
         #using groupArray, get all events which belong to user
         for i in groupArray:
-            groupEvent = Event.objects.filter(Group=i)
-            groupEventsArr.append(groupEvent)
+            groupEvents = Event.objects.filter(Group=i)
+            for i in groupEvents:
+                groupEventsArr.append(Event.objects.get(Event_Id= i.Event_Id))
+
+
         # using the datetime model field only show the upcoming events not past ones
         for i in userReservationArr:
             event = Event.objects.get(Event_Id=i.Event.Event_Id)
