@@ -31,4 +31,6 @@ urlpatterns = [
     path('notSignedIn/', NotSignedIn.as_view()),
     path('groupEventPage/', GroupEventsPage.as_view()),
     path('groupEventsPage/<group_id>/', views.GroupEventsPage.as_view(), name="GroupEventsPage"),
+    path('events/', Events.as_view()),
+
 ]

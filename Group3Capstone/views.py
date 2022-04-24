@@ -308,3 +308,16 @@ class GroupEventsPage(View):
         result = list(filter(lambda x: (x.Group == currGroup), allEvents))
 
         return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
+class Events(View):
+    def get(self, request, *args, **kwargs):
+        currentUser = User.objects.get(UserName=request.session["username"])
+        userReservationArr = Reservation.objects.filter(User = currentUser)
+        eventArray =[]
+        for i in userReservationArr:
+            event = Event.objects.get( Event_Id = i.Event.Event_Id)
+            eventArray.append(event)
+        return render(request, "eventsPage.html", {"EventArray": eventArray})
+
+    def post(self, request, *args, **kwargs):
+
+        return render(request, "eventsPage.html", {})
