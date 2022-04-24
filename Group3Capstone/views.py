@@ -299,7 +299,8 @@ class GroupEventsPage(View):
         if 'joinEvent' in request.POST:
             eventName2 = request.POST.get('joinEvent')
             print(eventName2)
-
+            print("inside Joinevent ")
+        print("posting")
 
         allEvents = Event.objects.all()
         result = list(filter(lambda x: (x.Group == currGroup), allEvents))

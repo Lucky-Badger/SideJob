@@ -177,6 +177,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary"  name = "joinEvent" id = "joinEvent" data-bs-dismiss="modal">Join Event</button>
                         <div id="code"></div>
                     </div>
 
@@ -204,13 +205,9 @@
         // Update the modal's content.
         var modalTitle = exampleModal.querySelector('.modal-title')
         var modalBodyInput = exampleModal.querySelector('.modal-body input')
-        let btn = document.createElement("button");
-        btn.innerHTML = "Save";
-        btn.name = "joinEvent"
+        var btn = document.querySelector('#joinEvent');
         btn.value = id
-        btn.type = "submit"
-        btn.className = "btn btn-primary"
-        document.getElementById("code").appendChild(btn);
+
 
         modalTitle.textContent = recipient
         modalBodyInput.value = recipient
@@ -226,4 +223,4 @@ window.onload = function() {
 </script>
 
 </body>
-</html>
+</html>]
