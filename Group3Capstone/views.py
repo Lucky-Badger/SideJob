@@ -310,10 +310,13 @@ class GroupEventsPage(View):
             eventID = request.POST.get('joinEvent')
             currentUser = User.objects.get(UserName=request.session["username"])
             currentEvent = Event.objects.get(Event_Id=eventID)
-            if Reservation.objects.get(User = currentUser, Event = currentEvent).exists():
+
+            try:
+                Reservation.objects.get(User=currentUser, Event=currentEvent)
                 return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
-            reservation = Reservation(User=currentUser, Event=currentEvent)
-            reservation.save()
+            except Reservation.DoesNotExist:
+                reservation = Reservation(User=currentUser, Event=currentEvent)
+                reservation.save()
 
         return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
 
@@ -332,12 +335,11 @@ class Events(View):
         for i in groupReservations:
             group = Group.objects.get(Group_Id=i.Group.Group_Id)
             groupArray.append(group)
-        #using groupArray, get all events which belong to user
+        # using groupArray, get all events which belong to user
         for i in groupArray:
             groupEvents = Event.objects.filter(Group=i)
             for i in groupEvents:
-                groupEventsArr.append(Event.objects.get(Event_Id= i.Event_Id))
-
+                groupEventsArr.append(Event.objects.get(Event_Id=i.Event_Id))
 
         # using the datetime model field only show the upcoming events not past ones
         for i in userReservationArr:
