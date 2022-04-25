@@ -65,13 +65,13 @@ class Reservation(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     Event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True)
 
-class groupPosts(models.Model):
-    groupPostID =models.BigAutoField(primary_key=True)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
-    title = models.CharField(max_length=40, null = True)
-    bodyText = models.CharField(max_length=256, null=True)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    date = models.DateTimeField(auto_now=False, auto_now_add=False, null=True)
+class GroupPost(models.Model):
+    GroupPostID =models.BigAutoField(primary_key=True)
+    Group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+    Title = models.CharField(max_length=40, null = True)
+    BodyText = models.CharField(max_length=256, null=True)
+    Creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    Date = models.DateTimeField(auto_now=False, auto_now_add=False, null=True)
 
 
 class Admin(User):

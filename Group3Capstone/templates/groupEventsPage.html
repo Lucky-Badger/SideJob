@@ -97,12 +97,46 @@
     </div>
 </div>
 
-<!-- Button trigger modal -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 ">
+            <div class="card mx-auto" style="width: 24rem;">
+                <div class="card-header">
+                    {{ group.Group_Name }} Discussion Posts
+                </div>
+                <ul class="list-group overflow-scroll list-group-flush"
+                    style="max-height: 350px; min-width: 24rem; overflow-x: hidden !important;">
+                    {% for i in posts %}
+                        <a href="#" class="list-group-item list-group-item-action" aria-current="true"
+                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-title="{{ i.Event_Name }}"
+                           data-bs-id="{{ i.Event_Id }}" data-bs-loc="{{ i.Location }}"
+                           data-bs-desc="{{ i.Event_Description }}" data-bs-date="{{ i.Date.date }}" data-bs-time="{{ i.Date.time }}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1" style="padding-right: 10px">{{ i.Event_Name }}</h5>
+                                <small>{{ i.Date.date }}</small>
+                            </div>
+                            <p class="mb-1" style="text-overflow-ellipsis: ellipsis ellipsis; ">{{ i.Event_Description }}</p>
+                            <small>{{ i.Location }}</small>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Button trigger modal "create an event" -->
 <div class="container mx-auto">
     <div class="row">
         <div class="col-lg-6 mx-auto text-center">
             <button type="button mx-auto" class="btn btn-primary " data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">
+                    data-bs-target="#createGroupPost">
+                Create a discussion Post
+            </button>
+            <button type="button mx-auto" class="btn btn-primary " data-bs-toggle="modal"
+                    data-bs-target="#createEventModal">
                 Create an event
             </button>
         </div>
@@ -110,8 +144,48 @@
 </div>
 
 
+<div class="modal fade" id="createGroupPost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Create a group post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="mx-1 mx-md-4" method="post">
+                    {% csrf_token %}
+
+                    <div class="col-lg-8 col-md-8 col-xl-8 mx-auto justify-content-center">
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <input type="text" id="form3Example1c" name="Title"
+                                       class="form-control" required>
+                                <label class="form-label" for="form3Example1c">Title</label>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <input style="height:100px;font-size:12pt;" type="textarea" id="form3Example1c" name="Location" class="form-control" required>
+                                <label class="form-label" for="form3Example1c">Text</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="createEvent" class="btn btn-primary">Create Event</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 <!-- Modal For Create an Event popup-->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="createEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
