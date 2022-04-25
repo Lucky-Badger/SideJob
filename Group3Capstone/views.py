@@ -277,14 +277,22 @@ class GroupEventsPage(View):
     def get(self, request, *args, **kwargs):
         id = kwargs['group_id']
         currGroup = Group.objects.get(Group_Id=id)
-
         users = currGroup.Joined_Users.all()
 
+        groupPostArray = []
         allEvents = Event.objects.all()
         result = list(filter(lambda x: (x.Group == currGroup), allEvents))
         result = filter(lambda x: (x.Date > timezone.now()), result)
 
-        return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
+        try:
+            groupPostArray = GroupPost.objects.get(Group=currGroup)
+        except GroupPost.DoesNotExist:
+            return render(request, "groupEventsPage.html",
+                          {"group": currGroup, "events": result, "users": users, "posts": groupPostArray})
+
+
+
+        return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, "posts": groupPostArray })
 
     def post(self, request, *args, **kwargs):
         id = kwargs['group_id']
