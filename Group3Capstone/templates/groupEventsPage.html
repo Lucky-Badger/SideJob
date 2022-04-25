@@ -35,7 +35,7 @@
                 <li class="nav-item">
                     <a class="nav-link border-dark" href="/joinedgroups/">Joined Groups</a>
                 </li>
-                 <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" href="/events/">Events</a>
                 </li>
                 </li>
@@ -70,12 +70,14 @@
                         <a href="#" class="list-group-item list-group-item-action" aria-current="true"
                            data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-title="{{ i.Event_Name }}"
                            data-bs-id="{{ i.Event_Id }}" data-bs-loc="{{ i.Location }}"
-                           data-bs-desc="{{ i.Event_Description }}" data-bs-date="{{ i.Date.date }}" data-bs-time="{{ i.Date.time }}">
+                           data-bs-desc="{{ i.Event_Description }}" data-bs-date="{{ i.Date.date }}"
+                           data-bs-time="{{ i.Date.time }}">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1" style="padding-right: 10px">{{ i.Event_Name }}</h5>
                                 <small>{{ i.Date.date }}</small>
                             </div>
-                            <p class="mb-1" style="text-overflow-ellipsis: ellipsis ellipsis; ">{{ i.Event_Description }}</p>
+                            <p class="mb-1"
+                               style="text-overflow-ellipsis: ellipsis ellipsis; ">{{ i.Event_Description }}</p>
                             <small>{{ i.Location }}</small>
                         </a>
                     {% endfor %}
@@ -111,12 +113,14 @@
                         <a href="#" class="list-group-item list-group-item-action" aria-current="true"
                            data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-title="{{ i.Event_Name }}"
                            data-bs-id="{{ i.Event_Id }}" data-bs-loc="{{ i.Location }}"
-                           data-bs-desc="{{ i.Event_Description }}" data-bs-date="{{ i.Date.date }}" data-bs-time="{{ i.Date.time }}">
+                           data-bs-desc="{{ i.Event_Description }}" data-bs-date="{{ i.Date.date }}"
+                           data-bs-time="{{ i.Date.time }}">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1" style="padding-right: 10px">{{ i.Event_Name }}</h5>
                                 <small>{{ i.Date.date }}</small>
                             </div>
-                            <p class="mb-1" style="text-overflow-ellipsis: ellipsis ellipsis; ">{{ i.Event_Description }}</p>
+                            <p class="mb-1"
+                               style="text-overflow-ellipsis: ellipsis ellipsis; ">{{ i.Event_Description }}</p>
                             <small>{{ i.Location }}</small>
                         </a>
                     {% endfor %}
@@ -167,15 +171,16 @@
                         <div class="d-flex flex-row align-items-center mb-4">
                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                             <div class="form-outline flex-fill mb-0">
-                                <input style="height:100px;font-size:12pt;" type="textarea" id="form3Example1c" name="Location" class="form-control" required>
-                                <label class="form-label" for="form3Example1c">Text</label>
+                                <textarea class="form-control" id="textArea" name="GroupPostText" rows="5" cols="33" required>
+                                </textarea>
+                                <label class="form-label" for="textArea">Text</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" name="createEvent" class="btn btn-primary">Create Event</button>
+                        <button type="submit" name="createGroupPost" class="btn btn-primary">Create Post</button>
                     </div>
 
                 </form>
@@ -216,7 +221,8 @@
                         <div class="d-flex flex-row align-items-center mb-4">
                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                             <div class="form-outline flex-fill mb-0">
-                                <input type="datetime-local" class="form-control" name="dateTime" value="{{placement.date|date:'Y-m-d' }}">
+                                <input type="datetime-local" class="form-control" name="dateTime"
+                                       value="{{ placement.date|date:'Y-m-d' }}">
                                 <label class="form-label" for="form3Example1c">Date / Time</label>
                             </div>
                         </div>
