@@ -1,0 +1,14 @@
+.list-group{
+    max-height: 30px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.custom{
+  width: 300px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  display: inline-block !important;
+  text-overflow: ellipsis !important;
+}

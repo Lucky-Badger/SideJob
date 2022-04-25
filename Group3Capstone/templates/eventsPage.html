@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Info Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'Group3Capstone/css/groupEventPage.scss' %}">
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Panther Pickups</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active bg-black text-warning" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/account/">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/editaccount/">Edit Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link border-dark" href="/dashboard/">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/groups/">Groups</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/events/">Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link border-dark" href="/joinedgroups/">Joined Groups</a>
+                </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link border-dark" href="/createGroupPage/">Create Group</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="page-header text-center">
+    <h1>
+        My Events
+    </h1>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 ">
+            <div class="card mx-auto" style="width: 30rem;">
+                <div class="card-header">
+                    My Upcoming Events
+                </div>
+                <ul class="list-group overflow-scroll list-group-flush"
+                    style="max-height: 350px; min-width: 30rem; overflow-x: hidden !important;">
+                    {% for i in UserEvents %}
+                        <a href="#" class="list-group-item list-group-item-action" aria-current="true"
+                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-title="{{ i.Event_Name }}"
+                           data-bs-id="{{ i.Event_Id }}" data-bs-loc="{{ i.Location }}"
+                           data-bs-desc="{{ i.Event_Description }}" data-bs-date="{{ i.Date.date }}" data-bs-time="{{ i.Date.time }}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1" style="padding-right: 18px">{{ i.Event_Name }}</h5>
+                                <small>{{ i.Date.date }}</small>
+                            </div>
+                            <p class="mb-1" style="text-overflow-ellipsis: ellipsis ellipsis; ">{{ i.Event_Description }}</p>
+                            <small>{{ i.Location }}</small>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-6 ">
+            <div class="card mx-auto" style="width: 30rem;">
+                <div class="card-header">
+                    Joined Groups, upcoming events
+                </div>
+                <ul class="list-group overflow-scroll list-group-flush"
+                    style="max-height: 350px; min-width: 30rem; overflow-x: hidden !important;">
+                    {% for i in GroupsEvents %}
+                        <a href="#" class="list-group-item list-group-item-action" aria-current="true"
+                           data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-title="{{ i.Event_Name }}"
+                           data-bs-id="{{ i.Event_Id }}" data-bs-loc="{{ i.Location }}"
+                           data-bs-desc="{{ i.Event_Description }}" data-bs-date="{{ i.Date.date }}" data-bs-time="{{ i.Date.time }}">
+                             <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1" style="padding-right: 18px">{{ i.Event_Name }}</h5>
+                                <small>{{ i.Date.date }}</small>
+                            </div>
+                            <p class="mb-1" style="text-overflow-ellipsis: ellipsis ellipsis; ">{{ i.Event_Description }}</p>
+                            <small>{{ i.Location }}</small>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/../../static/Group3Capstone/js/bootstrap.min.js"></script>
+
+<script>
+    var exampleModal = document.getElementById('exampleModal2')
+    exampleModal.addEventListener('show.bs.modal', function (event) {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        // Button that triggered the modal
+        var button = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        var title = button.getAttribute('data-bs-title')
+        var desc = button.getAttribute('data-bs-desc')
+        var id = button.getAttribute('data-bs-id')
+        var date = button.getAttribute('data-bs-date')
+        var time = button.getAttribute('data-bs-time')
+        var location = button.getAttribute('data-bs-loc')
+
+        // If necessary, you could initiate an AJAX request here
+        // and then do the updating in a callback.
+        //
+        // Update the modal's content.
+        document.getElementById("desc").innerHTML = desc;
+        document.getElementById("date").innerHTML = date;
+        document.getElementById("time").innerHTML = time;
+        document.getElementById("location").innerHTML = location;
+        var modalTitle = exampleModal.querySelector('.modal-title')
+        var btn = document.querySelector('#joinEvent');
+        btn.value = id
+
+        modalTitle.textContent = title
+
+    })
+</script>
+</body>
+</html>]

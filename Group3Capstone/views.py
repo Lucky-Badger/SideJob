@@ -1,12 +1,14 @@
+from datetime import datetime
+from django.utils import timezone
 from sqlite3 import IntegrityError
 
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.views import View
-from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import *  # create and add user models
-
 from .classes.administrator import Admin
-
 
 
 # Create your views here.
@@ -70,7 +72,6 @@ class CreateAccountsPage(View):
         if password != password2:
             error_dict.append("Passwords don't match, try again")
             return render(request, "home.html", {"errors": error_dict})
-
 
         newUser = User(User_FName=first_name, UserName=userName, User_LName=last_name, User_Password=password,
                        User_Phone=phoneNumber, Account_type=role, User_DOB=DOB, User_Address=address,
@@ -157,43 +158,13 @@ class Groups(View):
         group = list(Group.objects.all())
         print("\n", group)
 
-        currentUser = User.objects.get(UserName=request.session["username"])
-
-        allGroups = Group.objects.all()  # every group
-        currentUserGroups = []
-        groupsToTemplate = []
-
-        for i in allGroups:  # for each group in list of groups
-            print(i.Sport)
-            joinedUsers = i.Joined_Users.all()  # get list of users in that group
-            for u in joinedUsers:
-                if (u.UserName == currentUser.UserName):  # if our current user is in the group
-                    print("This person is in a group")
-                    currentUserGroups.append(i.Group_Id)  # add that group id to list of users groups
-
-        print(currentUserGroups)
-        print(len(currentUserGroups))
-
-        if (len(currentUserGroups) == 0):  # if there are no joined groups, go join dummy
-            message = "You have not joined a group yet please join one by clicking on the groups tab and selecting a group"
-            return render(request, "joinedgroups.html", {"message": message})
-        else:
-            for i in currentUserGroups:
-                g = Group.objects.get(
-                    Group_Id=i)  # getting group object to put in new list so we can get details in template
-                print(g.Sport.Sport_Name)
-                groupsToTemplate.append(g)
-
-            message = "Here are the groups you are in: "
-
-
-        return render(request, "groups.html", {"user": u, "groups": group, "message": message, "joined_groups": groupsToTemplate})
+        return render(request, "groups.html", {"user": u, "groups": group})
 
     def post(self, request):
         u = request.session["username"]
         currentUser = User.objects.get(UserName=request.session["username"])  # setting up user objects
 
-        groupJoined = request.POST["name"] #get groupID to put user in
+        groupJoined = request.POST["name"]  # group ID
         print("\n", groupJoined)  # to confirm in console that group was sent to post properly
 
         g = Group.objects.get(Group_Id=groupJoined)
@@ -218,6 +189,8 @@ class Groups(View):
             g.save()
             g.Joined_Users.add(currentUser)
             g.save()
+            groupReservation = GroupReservation(User=currentUser, Group=g)
+            groupReservation.save()
             print(g.SpotsAvailable)
             print(list(g.Joined_Users.all()))
 
@@ -228,19 +201,6 @@ class Groups(View):
             message = "You have successfully joined a group"
             message2 = "If you'd like join another group, please click the group tab on the navigation bar up top"
             message3 = "Here are other users in your group"
-
-
-           # userEmail = u.User_Email
-            print("Sending email to user")
-            send_mail(
-                'You have joined a group!',
-                'You Joined a group congratulations',
-                'django.noreply00@gmail.com',
-                ['clevide2@uwm.edu'],
-                fail_silently=False
-            )
-            print("\n Email Sent to user" )
-
             return render(request, "groups.html",
                           {"message": message, "message2": message2, "message3": message3, "joinedUsers": joinedUsers})
 
@@ -291,7 +251,8 @@ class CreateGroupPage(View):
 
         sportObj.save()
 
-        newGroup = Group(Sport=sportObj,Group_Description=groupDescription, Group_Name=groupName, SpotsAvailable=maxCount)
+        newGroup = Group(Sport=sportObj, Group_Description=groupDescription, Group_Name=groupName,
+                         SpotsAvailable=maxCount)
         message_dict = []
         # error_dict = validate_user(user)
         valid = ["User successfully created"]
@@ -304,6 +265,89 @@ class CreateGroupPage(View):
             return render(request, "home.html", {"errors": valid})
         # else:
         # return render(request, "create_user.html", {"errors": error_dict})
+
+
 class NotSignedIn(View):
     def get(self, request):
         return render(request, "notSignedIn.html", {})
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GroupEventsPage(View):
+    def get(self, request, *args, **kwargs):
+        id = kwargs['group_id']
+        currGroup = Group.objects.get(Group_Id=id)
+
+        users = currGroup.Joined_Users.all()
+
+        allEvents = Event.objects.all()
+        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
+        result = filter(lambda x: (x.Date > timezone.now()), result)
+
+        return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
+
+    def post(self, request, *args, **kwargs):
+        id = kwargs['group_id']
+        currGroup = Group.objects.get(Group_Id=id)
+
+        users = currGroup.Joined_Users.all()
+
+        if 'createEvent' in request.POST:
+            eventName = request.POST['Event_Name']
+            location = request.POST['Location']
+            dateTime = request.POST['dateTime']
+            groupDescription = request.POST['Description']
+            event = Event(Event_Name=eventName, Event_Description=groupDescription, Group=currGroup, Location=location,
+                          Date=dateTime)
+            event.save()
+
+        allEvents = Event.objects.all()
+
+        result = list(filter(lambda x: (x.Group == currGroup), allEvents))
+        result = filter(lambda x: (x.Date > timezone.now()), result)
+
+        if 'joinEvent' in request.POST:
+            eventID = request.POST.get('joinEvent')
+            currentUser = User.objects.get(UserName=request.session["username"])
+            currentEvent = Event.objects.get(Event_Id=eventID)
+
+            try:
+                Reservation.objects.get(User=currentUser, Event=currentEvent)
+                return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
+            except Reservation.DoesNotExist:
+                reservation = Reservation(User=currentUser, Event=currentEvent)
+                reservation.save()
+
+        return render(request, "groupEventsPage.html", {"group": currGroup, "events": result, "users": users, })
+
+
+class Events(View):
+    def get(self, request, *args, **kwargs):
+        currentUser = User.objects.get(UserName=request.session["username"])
+        userReservationArr = Reservation.objects.filter(User=currentUser)
+        eventArray = []
+
+        groupReservations = GroupReservation.objects.filter(User=currentUser)
+        groupArray = []
+
+        groupEventsArr = []
+        # get reservations, and get all the users groups
+        for i in groupReservations:
+            group = Group.objects.get(Group_Id=i.Group.Group_Id)
+            groupArray.append(group)
+        # using groupArray, get all events which belong to user
+        for i in groupArray:
+            groupEvents = Event.objects.filter(Group=i)
+            for i in groupEvents:
+                groupEventsArr.append(Event.objects.get(Event_Id=i.Event_Id))
+
+        # using the datetime model field only show the upcoming events not past ones
+        for i in userReservationArr:
+            event = Event.objects.get(Event_Id=i.Event.Event_Id)
+            if event.Date > timezone.now():
+                eventArray.append(event)
+        return render(request, "eventsPage.html", {"UserEvents": eventArray, "GroupsEvents": groupEventsArr})
+
+    def post(self, request, *args, **kwargs):
+
+        return render(request, "eventsPage.html", {})
