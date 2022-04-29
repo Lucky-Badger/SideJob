@@ -34,7 +34,7 @@ class Group(models.Model):
     Group_Description = models.CharField(max_length=256, null=True)
     Creator = models.ForeignKey(User, related_name='Group_Creator', on_delete=models.CASCADE, null=True)
     SpotsAvailable = models.IntegerField(null=True)
-    #Joined_Users = models.ManyToManyField('User', related_name='Joining_User')
+    Joined_Users = models.ManyToManyField('User', related_name='Joining_User')
 
     def get_absolute_url(self):
         return reverse_lazy('GroupsEventsPage/', kwargs={'group_id': self.Group_Id})
