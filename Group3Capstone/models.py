@@ -29,12 +29,12 @@ class Sport(models.Model):
 
 class Group(models.Model):
     Group_Id = models.BigAutoField(primary_key=True)
-    Group_Name = models.CharField(max_length=20, unique=True, blank=True)
+    Group_Name = models.CharField(max_length=20, unique=False, blank=True)
     Sport = models.ForeignKey(Sport, on_delete=models.CASCADE, null=True)
     Group_Description = models.CharField(max_length=256, null=True)
     Creator = models.ForeignKey(User, related_name='Group_Creator', on_delete=models.CASCADE, null=True)
     SpotsAvailable = models.IntegerField(null=True)
-    Joined_Users = models.ManyToManyField('User', related_name='Joining_User')
+    #Joined_Users = models.ManyToManyField('User', related_name='Joining_User')
 
     def get_absolute_url(self):
         return reverse_lazy('GroupsEventsPage/', kwargs={'group_id': self.Group_Id})

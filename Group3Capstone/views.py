@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-
+from django.core.mail import send_mail
 from .models import *  # create and add user models
 from .classes.administrator import Admin
 
@@ -193,6 +193,18 @@ class Groups(View):
             groupReservation.save()
             print(g.SpotsAvailable)
             print(list(g.Joined_Users.all()))
+
+            # userEmail = u.User_Email
+            print("Sending email to user", currentUser.User_Email)
+            send_mail(
+                'You have joined a group!',
+                'You Joined a group congratulations',
+                'django.noreply00@gmail.com',
+                ['clevide2@uwm.edu'],
+                fail_silently=False
+            )
+            print("\n Email Sent to user")
+
 
             for i in joinedUsers:
                 print(
