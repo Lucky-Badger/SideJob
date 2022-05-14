@@ -213,16 +213,21 @@ class JoinedGroups(View):
         currentUserGroups = []
         groupsToTemplate = []
 
+        groupReservations = GroupReservation.objects.filter(User=currentUser)
+        groupArray = []
+
+        groupEventsArr = []
+        # get reservations, and get all the users groups
+        for i in groupReservations:
+            group = Group.objects.get(Group_Id=i.Group.Group_Id)
+            groupArray.append(group)
+
         for i in allGroups:  # for each group in list of groups
             print(i.Sport)
             joinedUsers = i.Joined_Users.all()  # get list of users in that group
             for u in joinedUsers:
                 if (u.UserName == currentUser.UserName):  # if our current user is in the group
-                    print("This person is in a group")
                     currentUserGroups.append(i.Group_Id)  # add that group id to list of users groups
-
-        print(currentUserGroups)
-        print(len(currentUserGroups))
 
         if (len(currentUserGroups) == 0):  # if there are no joined groups, go join dummy
             message = "You have not joined a group yet please join one by clicking on the groups tab and selecting a group"
@@ -235,7 +240,7 @@ class JoinedGroups(View):
                 groupsToTemplate.append(g)
 
             message = "Here are the groups you are in: "
-            return render(request, "joinedgroups.html", {"message": message, "joined_groups": groupsToTemplate})
+            return render(request, "joinedgroups.html", {"message": message, "joined_groups": groupArray})
 
 
 class CreateGroupPage(View):
