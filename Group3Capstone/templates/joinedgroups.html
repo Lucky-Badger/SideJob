@@ -46,7 +46,7 @@
     </div>
 </nav>
 
-<h1>Groups you have joined</h1>
+<h1 class="text-center"> Groups you have joined</h1>
 
 
 <p>{{ message }}</p>
@@ -59,8 +59,6 @@
             {{ i.Group_Name }}
            <div><a href="{%  url 'GroupEventsPage' i.Group_Id %}" class="btn btn-info" name="createGroup" role="button">Go to Group Page</a></div>
 
-            {{ i.Sport.Sport_Name }} - {{ i.Creator.User_FName }}
-            <div><a href="{%  url 'GroupEventsPage' i.Group_Id %}" class="btn btn-info" name="createGroup" role="button">Go to Group Page</a></div>
 
 
         </td></tr>

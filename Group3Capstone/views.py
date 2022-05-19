@@ -253,7 +253,7 @@ class Groups(View):
             message2 = "If you'd like join another group, please click the group tab on the navigation bar up top"
             message3 = "Here are other users in your group"
             return render(request, "groups.html",
-                          {"message": message, "message2": message2, "message3": message3, "joinedUsers": joinedUsers})
+                         )
 
 
 class JoinedGroups(View):
@@ -301,24 +301,24 @@ class CreateGroupPage(View):
     def post(self, request):
         groupName = request.POST['Group_Name']
         sport = request.POST['Sport']
-        maxCount = request.POST['Max_Players']
+
         groupDescription = request.POST['Group_Description']
         sportObj = Sport(Sport_Name=sport)
 
         sportObj.save()
 
         newGroup = Group(Sport=sportObj, Group_Description=groupDescription, Group_Name=groupName,
-                         SpotsAvailable=maxCount)
+                         SpotsAvailable=200)
         message_dict = []
         # error_dict = validate_user(user)
         valid = ["User successfully created"]
-
+        allGroups = Group.objects.all()
         try:
             newGroup.save()
         except IntegrityError:
             return render(request, "createGroupPage.html", "")
         else:
-            return render(request, "home.html", {"errors": valid})
+            return render(request, "groups.html", {"groups": allGroups})
         # else:
         # return render(request, "create_user.html", {"errors": error_dict})
 
