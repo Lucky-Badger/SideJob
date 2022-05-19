@@ -223,15 +223,17 @@ class Groups(View):
             return render(request, "groups.html", {"message": message, "groups": group})
         else:
             val = g.SpotsAvailable - 1  # if user hasn't joined group, decrease this
-            print("\n", val)
+
             g.SpotsAvailable = val
             g.save()
             g.Joined_Users.add(currentUser)
             g.save()
             groupReservation = GroupReservation(User=currentUser, Group=g)
             groupReservation.save()
-            print(g.SpotsAvailable)
-            print(list(g.Joined_Users.all()))
+
+            message = "You have successfully joined a group"
+            message2 = "If you'd like join another group, please click the group tab on the navigation bar up top"
+            message3 = "Here are other users in your group"
 
             # userEmail = u.User_Email
             print("Sending email to user", currentUser.User_Email)
@@ -299,6 +301,7 @@ class CreateGroupPage(View):
         return render(request, "createGroupPage.html", {"errors": {"Just returning GET"}})
 
     def post(self, request):
+        currentUser = User.objects.get(UserName=request.session["username"])
         groupName = request.POST['Group_Name']
         sport = request.POST['Sport']
 
@@ -309,6 +312,16 @@ class CreateGroupPage(View):
 
         newGroup = Group(Sport=sportObj, Group_Description=groupDescription, Group_Name=groupName,
                          SpotsAvailable=200)
+
+        groupArray = []
+        groupReservations = GroupReservation.objects.filter(User=currentUser)
+
+
+        groupEventsArr = []
+        # get reservations, and get all the users groups
+        for i in groupReservations:
+            group = Group.objects.get(Group_Id=i.Group.Group_Id)
+            groupArray.append(group)
         message_dict = []
         # error_dict = validate_user(user)
         valid = ["User successfully created"]
@@ -318,7 +331,7 @@ class CreateGroupPage(View):
         except IntegrityError:
             return render(request, "createGroupPage.html", "")
         else:
-            return render(request, "groups.html", {"groups": allGroups})
+            return render(request, "groups.html", {"groups": allGroups, "joined_groups": groupArray })
         # else:
         # return render(request, "create_user.html", {"errors": error_dict})
 
