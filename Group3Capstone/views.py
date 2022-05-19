@@ -73,6 +73,17 @@ class CreateAccountsPage(View):
             error_dict.append("Passwords don't match, try again")
             return render(request, "home.html", {"errors": error_dict})
 
+        if(first_name == "" or last_name == "" or phoneNumber  == "" or userName == "" or address == ""):
+            error_dict.append("Please make sure everything is properly filled out")
+            return render(request, "home.html", {"errors": error_dict})
+
+        if(email == "" or email.find("@") == -1 or email.find(".com")==-1):
+            error_dict.append("Please properly fill out email")
+            return render(request, "home.html", {"errors": error_dict})
+        if(DOB == "" or DOB.find("-")==-1):
+            error_dict.append("Please fill out date of birth properly")
+            return render(request, "home.html", {"errors":error_dict})
+
         newUser = User(User_FName=first_name, UserName=userName, User_LName=last_name, User_Password=password,
                        User_Phone=phoneNumber, Account_type=role, User_DOB=DOB, User_Address=address,
                        User_Email=email, )
