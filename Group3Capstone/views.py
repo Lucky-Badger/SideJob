@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-
+from django.core.mail import send_mail
 from .models import *  # create and add user models
 from .classes.administrator import Admin
 
@@ -158,7 +158,35 @@ class Groups(View):
         group = list(Group.objects.all())
         print("\n", group)
 
-        return render(request, "groups.html", {"user": u, "groups": group})
+        currentUser = User.objects.get(UserName=request.session["username"])
+
+        allGroups = Group.objects.all()  # every group
+        currentUserGroups = []
+        groupsToTemplate = []
+
+        for i in allGroups:  # for each group in list of groups
+            print(i.Sport)
+            joinedUsers = i.Joined_Users.all()  # get list of users in that group
+            for u in joinedUsers:
+                if (u.UserName == currentUser.UserName):  # if our current user is in the group
+                    print("This person is in a group")
+                    currentUserGroups.append(i.Group_Id)  # add that group id to list of users groups
+
+        print(currentUserGroups)
+        print(len(currentUserGroups))
+
+        if (len(currentUserGroups) == 0):  # if there are no joined groups, go join dummy
+            message = "You have not joined a group yet please join one by clicking on the groups tab and selecting a group"
+        else:
+            for i in currentUserGroups:
+                g = Group.objects.get(
+                    Group_Id=i)  # getting group object to put in new list so we can get details in template
+                print(g.Sport.Sport_Name)
+                groupsToTemplate.append(g)
+
+            message = "Here are the groups you are in: "
+
+        return render(request, "groups.html", {"user": u, "groups": group, "message": message, "joined_groups": groupsToTemplate})
 
     def post(self, request):
         u = request.session["username"]
@@ -193,6 +221,18 @@ class Groups(View):
             groupReservation.save()
             print(g.SpotsAvailable)
             print(list(g.Joined_Users.all()))
+
+            # userEmail = u.User_Email
+            print("Sending email to user", currentUser.User_Email)
+            send_mail(
+                'You have joined a group!',
+                'You Joined a group congratulations',
+                'django.noreply00@gmail.com',
+                [currentUser.User_Email],
+                fail_silently=False
+            )
+            print("\n Email Sent to user")
+
 
             for i in joinedUsers:
                 print(
