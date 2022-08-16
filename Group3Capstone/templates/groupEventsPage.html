@@ -95,7 +95,7 @@
         </div>
     </div>
 </div>
-
+<p>HELLO</p>
 
 <div class="container" style = "padding-top: 100px;">
     <div class="row">
@@ -256,13 +256,20 @@
             <div class="modal-body">
                 <form class="mx-1 mx-md-4" method="post">
                     {% csrf_token %}
+                    <div id="title"></div>
+                    <strong>Description:</strong>
                     <div id="desc"></div>
                     <strong>Date:</strong>
                     <div id="date"></div>
                     <strong>Time:</strong>
                     <div id="time"></div>
+                    <strong>Location:</strong>
+                    <div id="location"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" name="joinEvent" id="joinEvent"
+                                data-bs-dismiss="modal">Join Event
+                        </button>
                         <div id="code"></div>
                     </div>
 
